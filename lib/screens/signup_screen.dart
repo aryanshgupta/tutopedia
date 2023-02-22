@@ -1,0 +1,297 @@
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter/material.dart';
+import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/components/text_btn.dart';
+import 'package:tutopedia/constants/styling.dart';
+import 'package:tutopedia/screens/home_screen.dart';
+import 'package:tutopedia/screens/signin_screen.dart';
+import 'package:tutopedia/services/api_service.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  bool hidePassword = true;
+  bool hideConfirmPassword = true;
+  bool isSigningUp = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Form(
+          key: formkey,
+          child: ListView(
+            padding: const EdgeInsets.all(15.0),
+            children: [
+              const SizedBox(height: 40.0),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: RichText(
+                  text: const TextSpan(
+                    text: "Welcome!",
+                    children: [
+                      TextSpan(text: "\nSign up to continue!"),
+                    ],
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: secondaryFont,
+                    ),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              TextFormField(
+                validator: (value) {
+                  if (value == "") {
+                    return "Please enter your full name";
+                  }
+                  return null;
+                },
+                controller: nameController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.person_rounded),
+                  labelText: "Name",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.text,
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (value) {
+                  if (value == "") {
+                    return "Please enter your email";
+                  }
+                  if (!EmailValidator.validate(value!)) {
+                    return "Please enter a valid email";
+                  }
+                  return null;
+                },
+                controller: emailController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.email_rounded),
+                  labelText: "Email",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (value) {
+                  if (value == "") {
+                    return "Please enter your password";
+                  }
+                  if (value!.length < 7) {
+                    return "Password should more than 7 character";
+                  }
+                  return null;
+                },
+                controller: passwordController,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.password_rounded),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        hidePassword = !hidePassword;
+                      });
+                    },
+                    icon: hidePassword
+                        ? const Icon(Icons.visibility_rounded)
+                        : const Icon(Icons.visibility_off_rounded),
+                    splashRadius: 20.0,
+                  ),
+                  labelText: "Password",
+                  border: const OutlineInputBorder(),
+                ),
+                obscureText: hidePassword,
+                keyboardType: TextInputType.text,
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (value) {
+                  if (value == "") {
+                    return "Please confirm your password";
+                  }
+                  if (passwordController.text !=
+                      confirmPasswordController.text) {
+                    return "Password do not match";
+                  }
+                  return null;
+                },
+                controller: confirmPasswordController,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.password_rounded),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        hideConfirmPassword = !hideConfirmPassword;
+                      });
+                    },
+                    icon: hideConfirmPassword
+                        ? const Icon(Icons.visibility_rounded)
+                        : const Icon(Icons.visibility_off_rounded),
+                    splashRadius: 20.0,
+                  ),
+                  labelText: "Confirm Password",
+                  border: const OutlineInputBorder(),
+                ),
+                obscureText: hideConfirmPassword,
+                keyboardType: TextInputType.text,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "By signing up you are agreed with our friendly terms and condition.",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              TextBtn(
+                onPressed: () {
+                  if (formkey.currentState!.validate() == true) {
+                    formkey.currentState!.save();
+                    if (!isSigningUp) {
+                      setState(() {
+                        isSigningUp = true;
+                      });
+                      LoadingDialog(context);
+                      ApiService()
+                          .signup(
+                        name: nameController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
+                        confirmPassword: confirmPasswordController.text,
+                      )
+                          .then((value) {
+                        setState(() {
+                          isSigningUp = false;
+                        });
+                        Navigator.pop(context);
+                        if (value["success"] ==
+                            "You have Registered Successfully !!") {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Thank You"),
+                              content: const Text(
+                                  "You are successfully registered."),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const HomeScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text("Okay"),
+                                )
+                              ],
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Already registered"),
+                              content: const Text(
+                                  "A user is already registered with this email, please use some other email."),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Okay"),
+                                )
+                              ],
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          );
+                        }
+                      }).onError((error, stackTrace) {
+                        setState(() {
+                          isSigningUp = false;
+                        });
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Something went wrong"),
+                            content: const Text(
+                                "Unable to sign up, please try again."),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Okay"),
+                              )
+                            ],
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        );
+                      });
+                    }
+                  }
+                },
+                label: "Submit",
+              ),
+              const SizedBox(height: 50),
+              const Text(
+                "Already have an account?",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 15.0),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const SigninScreen(),
+                    ),
+                  );
+                },
+                borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(
+                      color: Colors.indigo,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
