@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:tutopedia/models/category_model.dart';
+import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/screens/course_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -11,6 +13,7 @@ class CourseListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -35,7 +38,10 @@ class CourseListScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: ApiService().courseList(category.id),
+          future: ApiService().courseList(
+            id: category.id,
+            token: authProvider.authToken,
+          ),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data!.isNotEmpty) {

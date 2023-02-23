@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:tutopedia/screens/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:tutopedia/providers/onboarding_provider.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_content.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_indicator.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  PageController pageController = PageController();
-  int currentPage = 0;
-
-  @override
   Widget build(BuildContext context) {
+    final OnboardingProvider onboardingProvider =
+        Provider.of<OnboardingProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,11 +22,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
-                    );
+                    onboardingProvider.isVisited = true;
                   },
                   child: const Text(
                     "Skip",
@@ -45,11 +36,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Expanded(
                 child: PageView(
                   physics: const BouncingScrollPhysics(),
-                  controller: pageController,
+                  controller: onboardingProvider.pageController,
                   onPageChanged: (value) {
-                    setState(() {
-                      currentPage = value;
-                    });
+                    onboardingProvider.currentPage = value;
                   },
                   children: const [
                     PageViewContent(
@@ -77,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [0, 1, 2].map((page) {
                   return PageViewIndicator(
-                    currentPage: currentPage,
+                    currentPage: onboardingProvider.currentPage,
                     page: page,
                   );
                 }).toList(),
@@ -88,14 +77,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: TextButton(
                   onPressed: () {
-                    if (currentPage == 2) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                      );
+                    if (onboardingProvider.currentPage == 2) {
+                      onboardingProvider.isVisited = true;
                     } else {
-                      pageController.nextPage(
+                      onboardingProvider.pageController.nextPage(
                         duration: const Duration(milliseconds: 800),
                         curve: Curves.easeInOutCubic,
                       );
@@ -105,7 +90,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     backgroundColor: MaterialStateProperty.all(Colors.indigo),
                   ),
                   child: Text(
-                    currentPage == 2 ? "Explore" : "Next",
+                    onboardingProvider.currentPage == 2 ? "Explore" : "Next",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/text_btn.dart';
 import 'package:tutopedia/constants/styling.dart';
-import 'package:tutopedia/screens/home_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -96,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (value == "") {
                     return "Please enter your password";
                   }
-                  if (value!.length < 7) {
+                  if (value!.length < 8) {
                     return "Password should more than 7 character";
                   }
                   return null;
@@ -182,29 +181,15 @@ class _SignupScreenState extends State<SignupScreen> {
                         Navigator.pop(context);
                         if (value["success"] ==
                             "You have Registered Successfully !!") {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) => AlertDialog(
-                              title: const Text("Thank You"),
-                              content: const Text(
-                                  "You are successfully registered."),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomeScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text("Okay"),
-                                )
-                              ],
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const SigninScreen(),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Your are successfully sign up.",
                               ),
                             ),
                           );

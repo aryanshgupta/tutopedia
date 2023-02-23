@@ -3,12 +3,20 @@ class ApiUrl {
     "https://sagecrm.thesagenext.com",
   );
 
-  static Uri registerApi = Uri.parse(
+  static Uri signUpApi = Uri.parse(
     "${baseUrl.toString()}/tutoapi/api/register",
   );
 
-  static Uri loginApi = Uri.parse(
+  static Uri signInApi = Uri.parse(
     "${baseUrl.toString()}/tutoapi/api/login",
+  );
+
+  static Uri signOutApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/logout",
+  );
+
+  static Uri changePasswordApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/forgetPassword/otp/changePassword",
   );
 
   static Uri categoryListApi = Uri.parse(
