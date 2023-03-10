@@ -367,14 +367,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Scaffold.of(context).openDrawer();
                               }
                             },
-                            child: CircleAvatar(
-                              radius: 25.0,
-                              child: Icon(
-                                Icons.person,
-                                size: 30.0,
-                                color: Colors.indigo.shade600,
-                              ),
-                            ),
+                            child: authInfoBox.get("profilePhoto").isEmpty
+                                ? CircleAvatar(
+                                    radius: 25.0,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 30.0,
+                                      color: Colors.indigo.shade600,
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    radius: 25,
+                                    backgroundImage: NetworkImage(
+                                      "https://sagecrm.thesagenext.com/tutoapi/${authInfoBox.get("profilePhoto")}",
+                                    ),
+                                  ),
                           );
                         }),
                       ],
