@@ -66,7 +66,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 30.0),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please enter your full name";
                   }
                   return null;
@@ -84,7 +84,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 15),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please enter your email";
                   }
                   if (!EmailValidator.validate(value!)) {
@@ -105,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 15),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please enter your password";
                   }
                   if (value!.length < 8) {
@@ -136,7 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 15),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please confirm your password";
                   }
                   if (passwordController.text != confirmPasswordController.text) {
@@ -181,10 +181,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       LoadingDialog(context);
                       ApiService()
                           .signup(
-                        name: nameController.text,
-                        email: emailController.text,
-                        password: passwordController.text,
-                        confirmPassword: confirmPasswordController.text,
+                        name: nameController.text.trim(),
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                        confirmPassword: confirmPasswordController.text.trim(),
                       )
                           .then((value) {
                         setState(() {

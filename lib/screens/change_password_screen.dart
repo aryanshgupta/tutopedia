@@ -78,7 +78,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               const SizedBox(height: 20.0),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please enter your password";
                   }
                   if (value!.length < 8) {
@@ -109,7 +109,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               const SizedBox(height: 15),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please confirm your password";
                   }
                   if (passwordController.text != confirmPasswordController.text) {
@@ -149,8 +149,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       LoadingDialog(context);
                       ApiService()
                           .changePassword(
-                        password: passwordController.text,
-                        confirmPassword: confirmPasswordController.text,
+                        password: passwordController.text.trim(),
+                        confirmPassword: confirmPasswordController.text.trim(),
                         token: authProvider.user.authToken,
                       )
                           .then((value) {

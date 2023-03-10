@@ -75,7 +75,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: 20.0),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please enter your email";
                   }
                   if (!EmailValidator.validate(value!)) {
@@ -103,7 +103,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         isLoading = true;
                       });
                       LoadingDialog(context);
-                      ApiService().forgotPassword(emailController.text).then((value) {
+                      ApiService().forgotPassword(emailController.text.trim()).then((value) {
                         setState(() {
                           isLoading = false;
                         });

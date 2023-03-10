@@ -67,7 +67,7 @@ class _SigninScreenState extends State<SigninScreen> {
               const SizedBox(height: 30.0),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please enter your email";
                   }
                   if (!EmailValidator.validate(value!)) {
@@ -88,7 +88,7 @@ class _SigninScreenState extends State<SigninScreen> {
               const SizedBox(height: 15.0),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
+                  if (value != null && value.trim() == "") {
                     return "Please enter your password";
                   }
                   if (value!.length < 8) {
@@ -152,8 +152,8 @@ class _SigninScreenState extends State<SigninScreen> {
                       LoadingDialog(context);
                       ApiService()
                           .signin(
-                        email: emailController.text,
-                        password: passwordController.text,
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
                       )
                           .then((value) {
                         setState(() {

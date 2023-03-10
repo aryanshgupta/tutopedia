@@ -73,8 +73,8 @@ class _EmailVerifyScreenState extends State<EmailVerifyScreen> {
               const SizedBox(height: 20.0),
               TextFormField(
                 validator: (value) {
-                  if (value == "") {
-                    return "Please enter your email";
+                  if (value != null && value.trim() == "") {
+                    return "Please enter the otp";
                   }
                   return null;
                 },
@@ -102,7 +102,7 @@ class _EmailVerifyScreenState extends State<EmailVerifyScreen> {
                       LoadingDialog(context);
                       ApiService()
                           .verifyEmail(
-                        otp: otpController.text,
+                        otp: otpController.text.trim(),
                         token: authProvider.user.authToken,
                       )
                           .then((value) {
