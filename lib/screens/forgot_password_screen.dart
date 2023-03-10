@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/email_verify_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -169,7 +170,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
                   ),
                   child: const Text(
                     "Submit",

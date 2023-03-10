@@ -202,7 +202,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             Fluttertoast.showToast(
                               msg: "Your are successfully sign up.",
                               gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.indigo.shade500,
+                              backgroundColor: primaryColor.shade500,
                               textColor: Colors.white,
                               fontSize: 16.0,
                             );
@@ -256,7 +256,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
                   ),
                   child: const Text(
                     "Submit",
@@ -287,7 +287,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Text(
                     "Sign in",
                     style: TextStyle(
-                      color: Colors.indigo,
+                      color: primaryColor,
                     ),
                     textAlign: TextAlign.center,
                   ),

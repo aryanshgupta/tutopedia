@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:tutopedia/components/channel_view.dart';
+import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/channel_model.dart';
 import 'package:tutopedia/screens/lecture_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
@@ -157,7 +158,7 @@ class SearchChannelScreen extends SearchDelegate {
             );
           } else {
             return const SpinKitThreeInOut(
-              color: Colors.indigo,
+              color: primaryColor,
               size: 50.0,
             );
           }
@@ -301,7 +302,7 @@ class SearchChannelScreen extends SearchDelegate {
           );
         } else {
           return const SpinKitThreeInOut(
-            color: Colors.indigo,
+            color: primaryColor,
             size: 50.0,
           );
         }

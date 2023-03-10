@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutopedia/constants/styling.dart';
 
 class PageViewIndicator extends StatelessWidget {
   final int currentPage;
@@ -14,7 +15,7 @@ class PageViewIndicator extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(2.5),
       decoration: BoxDecoration(
-        color: currentPage == page ? Colors.indigo.shade100 : Colors.grey,
+        color: currentPage == page ? primaryColor.shade100 : Colors.grey,
         border: Border.all(
           color: currentPage == page ? Colors.black : Colors.grey,
           width: currentPage == page ? 2.5 : 0,

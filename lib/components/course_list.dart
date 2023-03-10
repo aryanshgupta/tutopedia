@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tutopedia/components/course_view.dart';
+import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class CourseList extends StatelessWidget {
@@ -67,7 +68,7 @@ class CourseList extends StatelessWidget {
           return SizedBox(
             height: MediaQuery.of(context).size.height - 305.0,
             child: const SpinKitThreeInOut(
-              color: Colors.indigo,
+              color: primaryColor,
               size: 50.0,
             ),
           );

@@ -106,7 +106,7 @@
 //                             "Change Password",
 //                             style: TextStyle(
 //                               fontSize: 15.0,
-//                               color: Colors.indigo,
+//                               color: primaryColor,
 //                             ),
 //                           ),
 //                         ),
@@ -196,7 +196,7 @@
 //                           },
 //                           style: ButtonStyle(
 //                             backgroundColor: MaterialStateProperty.all(
-//                               Colors.indigo,
+//                               primaryColor,
 //                             ),
 //                             padding: MaterialStateProperty.all(
 //                                 const EdgeInsets.symmetric(horizontal: 10.0)),

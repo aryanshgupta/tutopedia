@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/channel_model.dart';
 import 'package:tutopedia/services/api_service.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -183,7 +184,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                           horizontal: 15.0,
                                           vertical: 5.0,
                                         ),
-                                        color: snapshot.data![currentLectureIndex] == item ? Colors.indigo.shade100 : Colors.grey.shade200,
+                                        color: snapshot.data![currentLectureIndex] == item ? primaryColor.shade100 : Colors.grey.shade200,
                                         elevation: 0.0,
                                         shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
@@ -213,13 +214,13 @@ class _LectureScreenState extends State<LectureScreen> {
                                                 Container(
                                                   padding: const EdgeInsets.all(5.0),
                                                   decoration: BoxDecoration(
-                                                    color: snapshot.data![currentLectureIndex] == item ? Colors.indigo : Colors.indigo.shade100,
+                                                    color: snapshot.data![currentLectureIndex] == item ? primaryColor : primaryColor.shade100,
                                                     shape: BoxShape.circle,
                                                   ),
                                                   child: Icon(
                                                     snapshot.data![currentLectureIndex] == item ? Icons.pause_rounded : Icons.play_arrow_rounded,
                                                     size: 22.0,
-                                                    color: snapshot.data![currentLectureIndex] == item ? Colors.white : Colors.indigo,
+                                                    color: snapshot.data![currentLectureIndex] == item ? Colors.white : primaryColor,
                                                   ),
                                                 ),
                                                 const SizedBox(width: 10.0),
@@ -336,7 +337,7 @@ class _LectureScreenState extends State<LectureScreen> {
                       );
                     } else {
                       return const SpinKitThreeInOut(
-                        color: Colors.indigo,
+                        color: primaryColor,
                         size: 50.0,
                       );
                     }
@@ -385,7 +386,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                   Fluttertoast.showToast(
                                     msg: "Channel deleted from your bookmarks.",
                                     gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.indigo.shade500,
+                                    backgroundColor: primaryColor.shade500,
                                     textColor: Colors.white,
                                     fontSize: 16.0,
                                   );
@@ -415,7 +416,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                   Fluttertoast.showToast(
                                     msg: "Channel added to your bookmarks.",
                                     gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.indigo.shade500,
+                                    backgroundColor: primaryColor.shade500,
                                     textColor: Colors.white,
                                     fontSize: 16.0,
                                   );
@@ -430,7 +431,7 @@ class _LectureScreenState extends State<LectureScreen> {
                           }
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                          backgroundColor: MaterialStateProperty.all(primaryColor),
                         ),
                         child: Text(
                           isEnrolled ? "Unenroll" : "Enroll",

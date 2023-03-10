@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Icon(
                                 Icons.person,
                                 size: 75.0,
-                                color: Colors.indigo.shade600,
+                                color: primaryColor.shade600,
                               ),
                             )
                           : CircleAvatar(
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Fluttertoast.showToast(
                                         msg: "Sorry, unable to update profile photo.",
                                         gravity: ToastGravity.BOTTOM,
-                                        backgroundColor: Colors.indigo.shade500,
+                                        backgroundColor: primaryColor.shade500,
                                         textColor: Colors.white,
                                         fontSize: 16.0,
                                       );
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Fluttertoast.showToast(
                                       msg: "Error, unable to update profile photo.",
                                       gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: Colors.indigo.shade500,
+                                      backgroundColor: primaryColor.shade500,
                                       textColor: Colors.white,
                                       fontSize: 16.0,
                                     );
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Fluttertoast.showToast(
                                   msg: "Please choose a profile photo.",
                                   gravity: ToastGravity.BOTTOM,
-                                  backgroundColor: Colors.indigo.shade500,
+                                  backgroundColor: primaryColor.shade500,
                                   textColor: Colors.white,
                                   fontSize: 16.0,
                                 );
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           icon: const Icon(Icons.edit_rounded),
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all(Colors.indigo),
+                            foregroundColor: MaterialStateProperty.all(primaryColor),
                             backgroundColor: MaterialStateProperty.all(Colors.white),
                           ),
                         ),
@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: const TextStyle(
                       fontFamily: secondaryFont,
                       fontSize: 30.0,
-                      color: Colors.indigo,
+                      color: primaryColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -204,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Fluttertoast.showToast(
                             msg: "Your are successfully sign out.",
                             gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.indigo.shade500,
+                            backgroundColor: primaryColor.shade500,
                             textColor: Colors.white,
                             fontSize: 16.0,
                           );
@@ -307,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              Colors.indigo,
+                              primaryColor,
                             ),
                             foregroundColor: MaterialStateProperty.all(
                               Colors.white,
@@ -373,7 +373,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Icon(
                                       Icons.person,
                                       size: 30.0,
-                                      color: Colors.indigo.shade600,
+                                      color: primaryColor.shade600,
                                     ),
                                   )
                                 : CircleAvatar(
@@ -398,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         vertical: 10.0,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.indigo.shade50,
+                        color: primaryColor.shade50,
                         borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                       ),
                       child: Row(

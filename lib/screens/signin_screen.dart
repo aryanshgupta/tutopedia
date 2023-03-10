@@ -128,7 +128,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       "Forgot Password?",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.indigo,
+                        color: primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -169,7 +169,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             Fluttertoast.showToast(
                               msg: "Your are successfully sign in.",
                               gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.indigo.shade500,
+                              backgroundColor: primaryColor.shade500,
                               textColor: Colors.white,
                               fontSize: 16.0,
                             );
@@ -223,7 +223,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
                   ),
                   child: const Text(
                     "Submit",
@@ -254,7 +254,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   child: Text(
                     "Sign up",
                     style: TextStyle(
-                      color: Colors.indigo,
+                      color: primaryColor,
                     ),
                     textAlign: TextAlign.center,
                   ),

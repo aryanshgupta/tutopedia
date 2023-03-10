@@ -56,7 +56,7 @@ class PageViewContent extends StatelessWidget {
                   right: 0,
                   child: Container(
                     height: 10.0,
-                    color: Colors.indigo.shade100,
+                    color: primaryColor.shade100,
                   ),
                 ),
                 Text(

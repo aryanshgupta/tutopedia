@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tutopedia',
       theme: ThemeData(
-        primaryColor: Colors.indigo,
+        primaryColor: primaryColor,
         fontFamily: primaryFont,
         useMaterial3: true,
       ),

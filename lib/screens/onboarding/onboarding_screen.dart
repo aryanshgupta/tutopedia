@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_content.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_indicator.dart';
 
@@ -40,7 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: const Text(
                     "Skip",
                     style: TextStyle(
-                      color: Colors.indigo,
+                      color: primaryColor,
                       fontSize: 15.0,
                     ),
                   ),
@@ -108,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                    backgroundColor: MaterialStateProperty.all(primaryColor),
                   ),
                   child: Text(
                     currentPage == 2 ? "Explore" : "Next",
