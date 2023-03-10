@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
 import 'package:tutopedia/components/channel_view.dart';
 import 'package:tutopedia/models/channel_model.dart';
-import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/screens/lecture_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -50,7 +49,6 @@ class SearchChannelScreen extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     if (query.isEmpty) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -87,10 +85,6 @@ class SearchChannelScreen extends SearchDelegate {
               if (searchResult.isNotEmpty) {
                 return ChannelView(
                   channelList: searchResult,
-                  name: authProvider.user.name,
-                  email: authProvider.user.email,
-                  profilePhoto: authProvider.user.profilePhoto,
-                  authToken: authProvider.user.authToken,
                   shrinkWrap: false,
                 );
               } else {
@@ -174,7 +168,6 @@ class SearchChannelScreen extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return FutureBuilder(
       future: ApiService().channelList(channelId),
       builder: (context, snapshot) {
@@ -214,7 +207,8 @@ class SearchChannelScreen extends SearchDelegate {
                   return ListTile(
                     title: Text(searchResult[index].title),
                     onTap: () {
-                      if (authProvider.user.authToken.isEmpty) {
+                      var authInfoBox = Hive.box('auth_info');
+                      if (authInfoBox.get("authToken").isEmpty) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const SigninScreen(),

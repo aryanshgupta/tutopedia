@@ -8,11 +8,9 @@ onboarding page svg image
 mycouse max element 4
 text field focus color
 
-mycouses instant update -- use hive stream builder
 share
 enroll page
 theme
-replace shared preferences with hive
 animation
 
 add data into db
@@ -27,8 +25,15 @@ after updating profile photo it should return the url and then reflect changes o
 
 channel detail and lectures are not receiving
 
-trim password and email
+rating
 
+profile photo update alert
+
+alertbox rounded like about alert
+
+otp ui
+
+profile photo on home page
 
 
 

@@ -8,18 +8,7 @@ import 'package:tutopedia/services/api_service.dart';
 
 class ChannelListScreen extends StatelessWidget {
   final CourseModel course;
-  final String name;
-  final String email;
-  final String profilePhoto;
-  final String authToken;
-  const ChannelListScreen({
-    super.key,
-    required this.course,
-    required this.name,
-    required this.email,
-    required this.profilePhoto,
-    required this.authToken,
-  });
+  const ChannelListScreen({super.key, required this.course});
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +57,6 @@ class ChannelListScreen extends StatelessWidget {
               if (snapshot.data!.isNotEmpty) {
                 return ChannelView(
                   channelList: snapshot.data!,
-                  name: name,
-                  email: email,
-                  profilePhoto: profilePhoto,
-                  authToken: authToken,
                   shrinkWrap: false,
                 );
               } else {

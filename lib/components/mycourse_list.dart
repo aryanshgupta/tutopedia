@@ -1,39 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
 import 'package:tutopedia/components/channel_view.dart';
-import 'package:tutopedia/models/user_model.dart';
-import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
-class MyCourseList extends StatelessWidget {
-  final String name;
-  final String email;
-  final String authToken;
-  final String profilePhoto;
+class MyCourseList extends StatefulWidget {
+  const MyCourseList({super.key});
 
-  const MyCourseList({
-    super.key,
-    required this.name,
-    required this.email,
-    required this.authToken,
-    required this.profilePhoto,
-  });
+  @override
+  State<MyCourseList> createState() => _MyCourseListState();
+}
+
+class _MyCourseListState extends State<MyCourseList> {
+  var authInfoBox = Hive.box('auth_info');
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    if (authToken.isNotEmpty) {
-      authProvider.user = User(
-        name: name,
-        email: email,
-        profilePhoto: profilePhoto,
-        authToken: authToken,
-      );
-    }
-    if (authProvider.user.authToken.isEmpty) {
+    if (authInfoBox.get("authToken").isEmpty) {
       return SizedBox(
         height: MediaQuery.of(context).size.height - 305.0,
         child: GestureDetector(
@@ -66,16 +51,12 @@ class MyCourseList extends StatelessWidget {
       );
     } else {
       return FutureBuilder(
-        future: ApiService().myCourses(authProvider.user.authToken),
+        future: ApiService().myCourses(authInfoBox.get("authToken")),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
               return ChannelView(
                 channelList: snapshot.data!,
-                name: name,
-                email: email,
-                profilePhoto: profilePhoto,
-                authToken: authToken,
                 shrinkWrap: true,
               );
             } else {

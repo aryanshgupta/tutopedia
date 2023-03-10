@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
 import 'package:tutopedia/models/channel_model.dart';
-import 'package:tutopedia/models/user_model.dart';
-import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/screens/lecture_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 
 class ChannelView extends StatefulWidget {
   final List<ChannelModel> channelList;
-  final String name;
-  final String email;
-  final String profilePhoto;
-  final String authToken;
   final bool shrinkWrap;
 
   const ChannelView({
     super.key,
     required this.channelList,
-    required this.name,
-    required this.email,
-    required this.profilePhoto,
-    required this.authToken,
     required this.shrinkWrap,
   });
 
@@ -34,7 +24,6 @@ class _ChannelViewState extends State<ChannelView> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return ListView.builder(
       shrinkWrap: widget.shrinkWrap,
       physics: widget.shrinkWrap ? const ScrollPhysics() : null,
@@ -49,16 +38,8 @@ class _ChannelViewState extends State<ChannelView> {
             Radius.circular(10.0),
           ),
           onTap: () {
-            if (widget.authToken.isNotEmpty) {
-              authProvider.user = User(
-                name: widget.name,
-                email: widget.email,
-                profilePhoto: widget.profilePhoto,
-                authToken: widget.authToken,
-              );
-            }
-
-            if (authProvider.user.authToken.isEmpty) {
+            var authInfoBox = Hive.box('auth_info');
+            if (authInfoBox.get("authToken").isEmpty) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const SigninScreen(),

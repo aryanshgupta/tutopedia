@@ -5,18 +5,7 @@ import 'package:tutopedia/components/course_view.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class CourseList extends StatelessWidget {
-  final String name;
-  final String email;
-  final String profilePhoto;
-  final String authToken;
-
-  const CourseList({
-    super.key,
-    required this.name,
-    required this.email,
-    required this.profilePhoto,
-    required this.authToken,
-  });
+  const CourseList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +16,6 @@ class CourseList extends StatelessWidget {
           if (snapshot.data!.isNotEmpty) {
             return CourseView(
               courseList: snapshot.data!,
-              name: name,
-              email: email,
-              profilePhoto: profilePhoto,
-              authToken: authToken,
               shrinkWrap: true,
             );
           } else {

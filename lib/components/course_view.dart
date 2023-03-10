@@ -4,18 +4,10 @@ import 'package:tutopedia/screens/channel_list_screen.dart';
 
 class CourseView extends StatelessWidget {
   final List<CourseModel> courseList;
-  final String name;
-  final String email;
-  final String profilePhoto;
-  final String authToken;
   final bool shrinkWrap;
   const CourseView({
     super.key,
     required this.courseList,
-    required this.name,
-    required this.email,
-    required this.profilePhoto,
-    required this.authToken,
     required this.shrinkWrap,
   });
 
@@ -43,10 +35,6 @@ class CourseView extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => ChannelListScreen(
                   course: courseList[index],
-                  name: name,
-                  email: email,
-                  profilePhoto: profilePhoto,
-                  authToken: authToken,
                 ),
               ),
             );
@@ -90,6 +78,7 @@ class CourseView extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: 20.0,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

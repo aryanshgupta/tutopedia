@@ -1,13 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
-import 'package:tutopedia/components/text_btn.dart';
 import 'package:tutopedia/constants/styling.dart';
-import 'package:tutopedia/models/user_model.dart';
-import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/screens/forgot_password_screen.dart';
 import 'package:tutopedia/screens/signup_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -37,7 +33,6 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -141,54 +136,74 @@ class _SigninScreenState extends State<SigninScreen> {
                 ),
               ),
               const SizedBox(height: 5.0),
-              TextBtn(
-                onPressed: () {
-                  if (formkey.currentState!.validate() == true) {
-                    formkey.currentState!.save();
-                    if (!isLoading) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      LoadingDialog(context);
-                      ApiService()
-                          .signin(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      )
-                          .then((value) {
+              SizedBox(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  onPressed: () {
+                    if (formkey.currentState!.validate() == true) {
+                      formkey.currentState!.save();
+                      if (!isLoading) {
                         setState(() {
-                          isLoading = false;
+                          isLoading = true;
                         });
-                        Navigator.pop(context);
-                        if (value["success"] == true) {
-                          authProvider.user = User(
-                            name: value["data"]["name"] ?? "",
-                            email: value["data"]["email"] ?? "",
-                            profilePhoto: value["data"]["profile_image"] ?? "",
-                            authToken: value["data"]["token"] ?? "",
-                          );
-
-                          SharedPreferences.getInstance().then((perfs) {
-                            perfs.setString('name', value["data"]["name"] ?? "");
-                            perfs.setString('email', value["data"]["email"] ?? "");
-                            perfs.setString('profilePhoto', value["data"]["profile_image"] ?? "");
-                            perfs.setString('authToken', value["data"]["token"] ?? "");
+                        LoadingDialog(context);
+                        ApiService()
+                            .signin(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        )
+                            .then((value) {
+                          setState(() {
+                            isLoading = false;
                           });
+                          Navigator.pop(context);
+                          if (value["success"] == true) {
+                            var authInfoBox = Hive.box('auth_info');
+                            authInfoBox.put('name', value["data"]["name"] ?? "");
+                            authInfoBox.put('email', value["data"]["email"] ?? "");
+                            authInfoBox.put('profilePhoto', value["data"]["profile_image"] ?? "");
+                            authInfoBox.put('authToken', value["data"]["token"] ?? "");
 
-                          Navigator.of(context).pop();
-                          Fluttertoast.showToast(
-                            msg: "Your are successfully sign in.",
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.indigo.shade500,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        } else {
+                            Navigator.of(context).pop();
+                            Fluttertoast.showToast(
+                              msg: "Your are successfully sign in.",
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.indigo.shade500,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Signing failed"),
+                                content: const Text("That email and password combination didn't work. Try again."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Okay"),
+                                  )
+                                ],
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            );
+                          }
+                        }).onError((error, stackTrace) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pop(context);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Signing failed"),
-                              content: const Text("That email and password combination didn't work. Try again."),
+                              title: const Text("Something went wrong"),
+                              content: const Text("Unable to sign in, please try again."),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -203,36 +218,21 @@ class _SigninScreenState extends State<SigninScreen> {
                               ),
                             ),
                           );
-                        }
-                      }).onError((error, stackTrace) {
-                        setState(() {
-                          isLoading = false;
                         });
-                        Navigator.pop(context);
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Something went wrong"),
-                            content: const Text("Unable to sign in, please try again."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Okay"),
-                              )
-                            ],
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        );
-                      });
+                      }
                     }
-                  }
-                },
-                label: "Submit",
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                  ),
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 25.0),
               const Text(

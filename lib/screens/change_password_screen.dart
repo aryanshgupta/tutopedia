@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
-import 'package:tutopedia/components/text_btn.dart';
-import 'package:tutopedia/models/user_model.dart';
-import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -34,7 +30,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -138,63 +133,83 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 keyboardType: TextInputType.text,
               ),
               const SizedBox(height: 15.0),
-              TextBtn(
-                onPressed: () {
-                  if (formkey.currentState!.validate() == true) {
-                    formkey.currentState!.save();
-                    if (!isLoading) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      LoadingDialog(context);
-                      ApiService()
-                          .changePassword(
-                        password: passwordController.text.trim(),
-                        confirmPassword: confirmPasswordController.text.trim(),
-                        token: authProvider.user.authToken,
-                      )
-                          .then((value) {
+              SizedBox(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  onPressed: () {
+                    if (formkey.currentState!.validate() == true) {
+                      formkey.currentState!.save();
+                      if (!isLoading) {
                         setState(() {
-                          isLoading = false;
+                          isLoading = true;
                         });
-                        Navigator.pop(context);
-                        if (value["message"] == "Your password has been changed") {
-                          authProvider.user = User(
-                            name: "",
-                            email: "",
-                            profilePhoto: "",
-                            authToken: "",
-                          );
-
-                          SharedPreferences.getInstance().then((perfs) {
-                            perfs.setString('name', "");
-                            perfs.setString('email', "");
-                            perfs.setString('profilePhoto', "");
-                            perfs.setString('authToken', "");
+                        LoadingDialog(context);
+                        var authInfoBox = Hive.box('auth_info');
+                        ApiService()
+                            .changePassword(
+                          password: passwordController.text.trim(),
+                          confirmPassword: confirmPasswordController.text.trim(),
+                          token: authInfoBox.get("authToken"),
+                        )
+                            .then((value) {
+                          setState(() {
+                            isLoading = false;
                           });
+                          Navigator.pop(context);
+                          if (value["message"] == "Your password has been changed") {
+                            authInfoBox.put('name', "");
+                            authInfoBox.put('email', "");
+                            authInfoBox.put('profilePhoto', "");
+                            authInfoBox.put('authToken', "");
 
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text("Password Changed"),
-                              content: const Text("Your password has been successfully changed, please sign in again."),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Okay"),
-                                )
-                              ],
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Password Changed"),
+                                content: const Text("Your password has been successfully changed, please sign in again."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Okay"),
+                                  )
+                                ],
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
                               ),
-                            ),
-                          );
-                        } else {
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Something went wrong"),
+                                content: const Text("Unable to change password, please try again."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Okay"),
+                                  )
+                                ],
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            );
+                          }
+                        }).onError((error, stackTrace) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pop(context);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -214,36 +229,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               ),
                             ),
                           );
-                        }
-                      }).onError((error, stackTrace) {
-                        setState(() {
-                          isLoading = false;
                         });
-                        Navigator.pop(context);
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Something went wrong"),
-                            content: const Text("Unable to change password, please try again."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Okay"),
-                              )
-                            ],
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        );
-                      });
+                      }
                     }
-                  }
-                },
-                label: "Submit",
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                  ),
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

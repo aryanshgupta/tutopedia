@@ -2,7 +2,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
-import 'package:tutopedia/components/text_btn.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -170,46 +169,74 @@ class _SignupScreenState extends State<SignupScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              TextBtn(
-                onPressed: () {
-                  if (formkey.currentState!.validate() == true) {
-                    formkey.currentState!.save();
-                    if (!isLoading) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      LoadingDialog(context);
-                      ApiService()
-                          .signup(
-                        name: nameController.text.trim(),
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                        confirmPassword: confirmPasswordController.text.trim(),
-                      )
-                          .then((value) {
+              SizedBox(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  onPressed: () {
+                    if (formkey.currentState!.validate() == true) {
+                      formkey.currentState!.save();
+                      if (!isLoading) {
                         setState(() {
-                          isLoading = false;
+                          isLoading = true;
                         });
-                        Navigator.pop(context);
-                        if (value["success"] == "You have Registered Successfully !!") {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const SigninScreen(),
-                            ),
-                          );
-                          Fluttertoast.showToast(
-                            msg: "Your are successfully sign up.",
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.indigo.shade500,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        } else {
+                        LoadingDialog(context);
+                        ApiService()
+                            .signup(
+                          name: nameController.text.trim(),
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                          confirmPassword: confirmPasswordController.text.trim(),
+                        )
+                            .then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pop(context);
+                          if (value["success"] == "You have Registered Successfully !!") {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const SigninScreen(),
+                              ),
+                            );
+                            Fluttertoast.showToast(
+                              msg: "Your are successfully sign up.",
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.indigo.shade500,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Already registered"),
+                                content: const Text("A user is already registered with this email, please use some other email."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Okay"),
+                                  )
+                                ],
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            );
+                          }
+                        }).onError((error, stackTrace) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pop(context);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Already registered"),
-                              content: const Text("A user is already registered with this email, please use some other email."),
+                              title: const Text("Something went wrong"),
+                              content: const Text("Unable to sign up, please try again."),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -224,36 +251,21 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                             ),
                           );
-                        }
-                      }).onError((error, stackTrace) {
-                        setState(() {
-                          isLoading = false;
                         });
-                        Navigator.pop(context);
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Something went wrong"),
-                            content: const Text("Unable to sign up, please try again."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Okay"),
-                              )
-                            ],
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        );
-                      });
+                      }
                     }
-                  }
-                },
-                label: "Submit",
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                  ),
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 25.0),
               const Text(

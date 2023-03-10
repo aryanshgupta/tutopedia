@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:tutopedia/components/course_view.dart';
 import 'package:tutopedia/models/course_model.dart';
-import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/screens/channel_list_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -45,7 +43,6 @@ class SearchCourseScreen extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     if (query.isEmpty) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -82,10 +79,6 @@ class SearchCourseScreen extends SearchDelegate {
               if (searchResult.isNotEmpty) {
                 return CourseView(
                   courseList: searchResult,
-                  name: authProvider.user.name,
-                  email: authProvider.user.email,
-                  profilePhoto: authProvider.user.profilePhoto,
-                  authToken: authProvider.user.authToken,
                   shrinkWrap: false,
                 );
               } else {
@@ -169,7 +162,6 @@ class SearchCourseScreen extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return FutureBuilder(
       future: ApiService().courseList(),
       builder: (context, snapshot) {
@@ -213,10 +205,6 @@ class SearchCourseScreen extends SearchDelegate {
                         MaterialPageRoute(
                           builder: (context) => ChannelListScreen(
                             course: searchResult[index],
-                            name: authProvider.user.name,
-                            email: authProvider.user.email,
-                            profilePhoto: authProvider.user.profilePhoto,
-                            authToken: authProvider.user.authToken,
                           ),
                         ),
                       );

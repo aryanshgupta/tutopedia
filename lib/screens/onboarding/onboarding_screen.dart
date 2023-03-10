@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tutopedia/providers/onboarding_provider.dart';
+import 'package:hive/hive.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_content.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final PageController pageController = PageController();
+
+  int currentPage = 0;
+
+  @override
   Widget build(BuildContext context) {
-    final OnboardingProvider onboardingProvider = Provider.of<OnboardingProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -22,10 +28,14 @@ class OnboardingScreen extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    onboardingProvider.setVisitStatus();
-                    SharedPreferences.getInstance().then((perfs) {
-                      perfs.setBool('visitStatus', true);
-                    });
+                    var appLogBox = Hive.box('app_log');
+                    appLogBox.put('visitStatus', true);
+
+                    var authInfoBox = Hive.box('auth_info');
+                    authInfoBox.put('name', "");
+                    authInfoBox.put('email', "");
+                    authInfoBox.put('profilePhoto', "");
+                    authInfoBox.put('authToken', "");
                   },
                   child: const Text(
                     "Skip",
@@ -39,9 +49,11 @@ class OnboardingScreen extends StatelessWidget {
               Expanded(
                 child: PageView(
                   physics: const BouncingScrollPhysics(),
-                  controller: onboardingProvider.pageController,
+                  controller: pageController,
                   onPageChanged: (value) {
-                    onboardingProvider.currentPage = value;
+                    setState(() {
+                      currentPage = value;
+                    });
                   },
                   children: const [
                     PageViewContent(
@@ -68,7 +80,7 @@ class OnboardingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [0, 1, 2].map((page) {
                   return PageViewIndicator(
-                    currentPage: onboardingProvider.currentPage,
+                    currentPage: currentPage,
                     page: page,
                   );
                 }).toList(),
@@ -79,14 +91,17 @@ class OnboardingScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: TextButton(
                   onPressed: () {
-                    if (onboardingProvider.currentPage == 2) {
-                      onboardingProvider.setVisitStatus();
+                    if (currentPage == 2) {
+                      var appLogBox = Hive.box('app_log');
+                      appLogBox.put('visitStatus', true);
 
-                      SharedPreferences.getInstance().then((perfs) {
-                        perfs.setBool('visitStatus', true);
-                      });
+                      var authInfoBox = Hive.box('auth_info');
+                      authInfoBox.put('name', "");
+                      authInfoBox.put('email', "");
+                      authInfoBox.put('profilePhoto', "");
+                      authInfoBox.put('authToken', "");
                     } else {
-                      onboardingProvider.pageController.nextPage(
+                      pageController.nextPage(
                         duration: const Duration(milliseconds: 800),
                         curve: Curves.easeInOutCubic,
                       );
@@ -96,7 +111,7 @@ class OnboardingScreen extends StatelessWidget {
                     backgroundColor: MaterialStateProperty.all(Colors.indigo),
                   ),
                   child: Text(
-                    onboardingProvider.currentPage == 2 ? "Explore" : "Next",
+                    currentPage == 2 ? "Explore" : "Next",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,

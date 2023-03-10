@@ -1,11 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
-import 'package:tutopedia/components/text_btn.dart';
-import 'package:tutopedia/models/user_model.dart';
-import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/screens/email_verify_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -31,7 +28,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -94,39 +90,66 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 20.0),
-              TextBtn(
-                onPressed: () {
-                  if (formkey.currentState!.validate() == true) {
-                    formkey.currentState!.save();
-                    if (!isLoading) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      LoadingDialog(context);
-                      ApiService().forgotPassword(emailController.text.trim()).then((value) {
+              SizedBox(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  onPressed: () {
+                    if (formkey.currentState!.validate() == true) {
+                      formkey.currentState!.save();
+                      if (!isLoading) {
                         setState(() {
-                          isLoading = false;
+                          isLoading = true;
                         });
-                        Navigator.pop(context);
-                        if (value["success"] == true) {
-                          authProvider.user = User(
-                            name: "",
-                            email: emailController.text,
-                            profilePhoto: "",
-                            authToken: value["data"]["token"],
-                          );
+                        LoadingDialog(context);
+                        ApiService().forgotPassword(emailController.text.trim()).then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pop(context);
+                          if (value["success"] == true) {
+                            var authInfoBox = Hive.box('auth_info');
+                            authInfoBox.put('name', "");
+                            authInfoBox.put('email', emailController.text.trim());
+                            authInfoBox.put('profilePhoto', "");
+                            authInfoBox.put('authToken', value["data"]["token"] ?? "");
 
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const EmailVerifyScreen(),
-                            ),
-                          );
-                        } else {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const EmailVerifyScreen(),
+                              ),
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Invalid email"),
+                                content: const Text("Unable to verfiy email, please try again."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Okay"),
+                                  )
+                                ],
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            );
+                          }
+                        }).onError((error, stackTrace) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pop(context);
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Invalid email"),
-                              content: const Text("Unable to verfiy email, please try again."),
+                              title: const Text("Something went wrong"),
+                              content: const Text("Unable to proceed, please try again."),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -141,36 +164,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               ),
                             ),
                           );
-                        }
-                      }).onError((error, stackTrace) {
-                        setState(() {
-                          isLoading = false;
                         });
-                        Navigator.pop(context);
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Something went wrong"),
-                            content: const Text("Unable to proceed, please try again."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Okay"),
-                              )
-                            ],
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        );
-                      });
+                      }
                     }
-                  }
-                },
-                label: "Submit",
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                  ),
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
