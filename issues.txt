@@ -27,7 +27,7 @@ after updating profile photo it should return the url and then reflect changes o
 
 channel detail and lectures are not receiving
 
-
+trim password and email
 
 
 

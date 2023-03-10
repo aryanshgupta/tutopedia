@@ -162,17 +162,17 @@ class _SigninScreenState extends State<SigninScreen> {
                         Navigator.pop(context);
                         if (value["success"] == true) {
                           authProvider.user = User(
-                            name: value["data"]["name"],
-                            email: value["data"]["email"],
-                            profilePhoto: value["data"]["profile_image"],
-                            authToken: value["data"]["token"],
+                            name: value["data"]["name"] ?? "",
+                            email: value["data"]["email"] ?? "",
+                            profilePhoto: value["data"]["profile_image"] ?? "",
+                            authToken: value["data"]["token"] ?? "",
                           );
 
                           SharedPreferences.getInstance().then((perfs) {
-                            perfs.setString('name', value["data"]["name"]);
-                            perfs.setString('email', value["data"]["email"]);
-                            perfs.setString('profilePhoto', value["data"]["profile_image"]);
-                            perfs.setString('authToken', value["data"]["token"]);
+                            perfs.setString('name', value["data"]["name"] ?? "");
+                            perfs.setString('email', value["data"]["email"] ?? "");
+                            perfs.setString('profilePhoto', value["data"]["profile_image"] ?? "");
+                            perfs.setString('authToken', value["data"]["token"] ?? "");
                           });
 
                           Navigator.of(context).pop();
