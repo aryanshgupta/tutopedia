@@ -6,46 +6,75 @@ class PageViewContent extends StatelessWidget {
   final String image;
   final String title;
   final String subtitle;
+  final String hightLightedText;
 
   const PageViewContent({
     super.key,
     required this.image,
     required this.title,
-    required this.subtitle,
+    this.subtitle = "",
+    required this.hightLightedText,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(height: 20.0),
-        SvgPicture.asset(
-          image,
-          width: MediaQuery.of(context).size.width,
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20.0),
+            SvgPicture.asset(
+              image,
+              width: MediaQuery.of(context).size.width,
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 25.0,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (subtitle.isNotEmpty)
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 25.0,
+                  fontFamily: secondaryFont,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            Stack(
+              children: [
+                Positioned(
+                  bottom: 2,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 10.0,
+                    color: Colors.indigo.shade100,
+                  ),
+                ),
+                Text(
+                  hightLightedText,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25.0,
+                    fontFamily: secondaryFont,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20.0),
+          ],
         ),
-        const SizedBox(height: 20.0),
-        Text(
-          title,
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-            fontSize: 30.0,
-            fontFamily: secondaryFont,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 15.0),
-        Text(
-          subtitle,
-          style: const TextStyle(
-            color: Colors.black87,
-            fontSize: 18.0,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 20.0),
-      ],
+      ),
     );
   }
 }

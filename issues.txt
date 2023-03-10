@@ -1,0 +1,77 @@
+
+statefull to stateless
+rebuild of tabs on changes
+refresher to rebuild tabs
+comment code
+add gridview max item not fix
+onboarding page svg image
+mycouse max element 4
+text field focus color
+
+mycouses instant update -- use hive stream builder
+share
+enroll page
+theme
+replace shared preferences with hive
+animation
+
+add data into db
+create api structure with all required properties
+add profile field in user model
+
+create color constant
+
+rounded border constant
+
+after updating profile photo it should return the url and then reflect changes on ui
+
+channel detail and lectures are not receiving
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

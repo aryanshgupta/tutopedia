@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/text_btn.dart';
-import 'package:tutopedia/models/user_model.dart';
 import 'package:tutopedia/providers/auth_provider.dart';
+import 'package:tutopedia/screens/change_password_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
-  const ChangePasswordScreen({super.key});
+class EmailVerifyScreen extends StatefulWidget {
+  const EmailVerifyScreen({super.key});
 
   @override
-  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+  State<EmailVerifyScreen> createState() => _EmailVerifyScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+class _EmailVerifyScreenState extends State<EmailVerifyScreen> {
+  final TextEditingController otpController = TextEditingController();
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  bool hidePassword = true;
-  bool hideConfirmPassword = true;
   bool isLoading = false;
 
   @override
   void dispose() {
-    passwordController.dispose();
-    confirmPasswordController.dispose();
+    otpController.dispose();
     super.dispose();
   }
 
@@ -49,7 +44,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ),
         backgroundColor: Colors.white,
         title: const Text(
-          "Create New Password",
+          "Verify your email",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -64,13 +59,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             padding: const EdgeInsets.all(15.0),
             children: [
               SvgPicture.asset(
-                'assets/svg/change_password.svg',
-                width: MediaQuery.of(context).size.width * 0.85,
+                'assets/svg/email_verify.svg',
+                width: MediaQuery.of(context).size.width,
               ),
               const SizedBox(height: 15.0),
-              const Text(
-                "Set the new password for your account so you can login and access all the features.",
-                style: TextStyle(
+              Text(
+                "Please enter the 4 digit code sent to ${authProvider.user.email}.",
+                style: const TextStyle(
                   fontSize: 18.0,
                 ),
                 textAlign: TextAlign.center,
@@ -79,65 +74,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               TextFormField(
                 validator: (value) {
                   if (value == "") {
-                    return "Please enter your password";
-                  }
-                  if (value!.length < 8) {
-                    return "Password must be atleast 8 characters";
+                    return "Please enter your email";
                   }
                   return null;
                 },
-                controller: passwordController,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.password_rounded),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        hidePassword = !hidePassword;
-                      });
-                    },
-                    icon: hidePassword ? const Icon(Icons.visibility_rounded) : const Icon(Icons.visibility_off_rounded),
-                    splashRadius: 20.0,
-                  ),
-                  labelText: "Password",
-                  border: const OutlineInputBorder(
+                controller: otpController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.password_rounded),
+                  labelText: "OTP",
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(50.0)),
                   ),
+                  counterText: "",
                 ),
-                obscureText: hidePassword,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
+                maxLength: 4,
               ),
-              const SizedBox(height: 15),
-              TextFormField(
-                validator: (value) {
-                  if (value == "") {
-                    return "Please confirm your password";
-                  }
-                  if (passwordController.text != confirmPasswordController.text) {
-                    return "Password do not match";
-                  }
-                  return null;
-                },
-                controller: confirmPasswordController,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.password_rounded),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        hideConfirmPassword = !hideConfirmPassword;
-                      });
-                    },
-                    icon: hideConfirmPassword ? const Icon(Icons.visibility_rounded) : const Icon(Icons.visibility_off_rounded),
-                    splashRadius: 20.0,
-                  ),
-                  labelText: "Confirm Password",
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                  ),
-                ),
-                obscureText: hideConfirmPassword,
-                keyboardType: TextInputType.text,
-              ),
-              const SizedBox(height: 15.0),
+              const SizedBox(height: 20.0),
               TextBtn(
                 onPressed: () {
                   if (formkey.currentState!.validate() == true) {
@@ -148,9 +101,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       });
                       LoadingDialog(context);
                       ApiService()
-                          .changePassword(
-                        password: passwordController.text,
-                        confirmPassword: confirmPasswordController.text,
+                          .verifyEmail(
+                        otp: otpController.text,
                         token: authProvider.user.authToken,
                       )
                           .then((value) {
@@ -158,28 +110,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           isLoading = false;
                         });
                         Navigator.pop(context);
-                        if (value["message"] == "Your password has been changed") {
-                          authProvider.user = User(
-                            name: "",
-                            email: "",
-                            profilePhoto: "",
-                            authToken: "",
+                        if (value["success"] == "You Can Change Your Password !") {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const ChangePasswordScreen(),
+                            ),
                           );
-
-                          SharedPreferences.getInstance().then((perfs) {
-                            perfs.setString('name', "");
-                            perfs.setString('email', "");
-                            perfs.setString('profilePhoto', "");
-                            perfs.setString('authToken', "");
-                          });
-
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                        } else if (value["error"] == "access denied") {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Password Changed"),
-                              content: const Text("Your password has been successfully changed, please sign in again."),
+                              title: const Text("Access Denied"),
+                              content: const Text("Unable to verfiy email, please try again."),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -198,8 +140,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Something went wrong"),
-                              content: const Text("Unable to change password, please try again."),
+                              title: const Text("Invalid OTP"),
+                              content: const Text("Unable to verfiy email, please try again."),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -224,7 +166,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text("Something went wrong"),
-                            content: const Text("Unable to change password, please try again."),
+                            content: const Text("Unable to proceed, please try again."),
                             actions: [
                               TextButton(
                                 onPressed: () {

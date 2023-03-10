@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutopedia/providers/auth_provider.dart';
 import 'package:tutopedia/providers/onboarding_provider.dart';
 import 'package:tutopedia/screens/home_screen.dart';
@@ -18,23 +19,38 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool visitStatus = false;
+
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((perfs) {
+      setState(() {
+        visitStatus = perfs.getBool('visitStatus') ?? false;
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final OnboardingProvider onboardingProvider =
-        Provider.of<OnboardingProvider>(context);
+    final OnboardingProvider onboardingProvider = Provider.of<OnboardingProvider>(context);
     return MaterialApp(
       title: 'Tutopedia',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primaryColor: Colors.indigo,
         fontFamily: primaryFont,
+        useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: onboardingProvider.isVisited
-          ? const HomeScreen()
-          : const OnboardingScreen(),
+      home: onboardingProvider.visitStatus || visitStatus ? const HomeScreen() : const OnboardingScreen(),
     );
   }
 }

@@ -7,6 +7,7 @@ class LoadingDialog {
       context: context,
       barrierDismissible: false,
       builder: (context) => Dialog(
+        elevation: 0.0,
         backgroundColor: Colors.transparent,
         child: Column(
           mainAxisSize: MainAxisSize.min,

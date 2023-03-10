@@ -14,12 +14,12 @@ class OnboardingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isVisited = false;
+  bool _visitStatus = false;
 
-  bool get isVisited => _isVisited;
+  bool get visitStatus => _visitStatus;
 
-  set isVisited(bool value) {
-    _isVisited = value;
+  void setVisitStatus() async {
+    _visitStatus = true;
     notifyListeners();
   }
 }

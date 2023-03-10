@@ -19,11 +19,39 @@ class ApiUrl {
     "${baseUrl.toString()}/tutoapi/api/forgetPassword/otp/changePassword",
   );
 
-  static Uri categoryListApi = Uri.parse(
-    "${baseUrl.toString()}/tutoapi/api/courses",
+  static Uri forgotPasswordApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/forgetPassword",
+  );
+
+  static Uri verifyEmailApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/forgetPassword/otp",
+  );
+
+  static Uri changeProfilePhotoApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/profile",
   );
 
   static Uri courseListApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/courses",
+  );
+
+  static Uri channelListApi = Uri.parse(
     "${baseUrl.toString()}/tutoapi/api/channel",
+  );
+
+  static Uri lectureListApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/lectures",
+  );
+
+  static Uri myCoursesApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/my/course",
+  );
+
+  static Uri addCourseApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/my/course",
+  );
+
+  static Uri deleteCourseApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/remove/my/course",
   );
 }

@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:tutopedia/providers/onboarding_provider.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_content.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final OnboardingProvider onboardingProvider =
-        Provider.of<OnboardingProvider>(context);
+    final OnboardingProvider onboardingProvider = Provider.of<OnboardingProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -22,7 +22,10 @@ class OnboardingScreen extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    onboardingProvider.isVisited = true;
+                    onboardingProvider.setVisitStatus();
+                    SharedPreferences.getInstance().then((perfs) {
+                      perfs.setBool('visitStatus', true);
+                    });
                   },
                   child: const Text(
                     "Skip",
@@ -43,21 +46,20 @@ class OnboardingScreen extends StatelessWidget {
                   children: const [
                     PageViewContent(
                       image: 'assets/svg/onboarding_1.svg',
-                      title: "Better way to learning is calling you!",
-                      subtitle:
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      title: "Online Study is the",
+                      subtitle: "Best choice for",
+                      hightLightedText: "everyone.",
                     ),
                     PageViewContent(
                       image: 'assets/svg/onboarding_2.svg',
-                      title: "Find yourself by doing whatever you do!",
-                      subtitle:
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                      title: "Best platform for both",
+                      hightLightedText: "Teachers & Learners",
                     ),
                     PageViewContent(
                       image: 'assets/svg/onboarding_3.svg',
-                      title: "It's not just learning, It's a promise!",
-                      subtitle:
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      title: "Learn Anytime,",
+                      subtitle: "Anywhere. Accelerate",
+                      hightLightedText: "Your Future and beyond.",
                     ),
                   ],
                 ),
@@ -78,7 +80,11 @@ class OnboardingScreen extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     if (onboardingProvider.currentPage == 2) {
-                      onboardingProvider.isVisited = true;
+                      onboardingProvider.setVisitStatus();
+
+                      SharedPreferences.getInstance().then((perfs) {
+                        perfs.setBool('visitStatus', true);
+                      });
                     } else {
                       onboardingProvider.pageController.nextPage(
                         duration: const Duration(milliseconds: 800),

@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/text_btn.dart';
 import 'package:tutopedia/constants/styling.dart';
@@ -17,14 +18,22 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   bool hidePassword = true;
   bool hideConfirmPassword = true;
-  bool isSigningUp = false;
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +75,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.person_rounded),
                   labelText: "Name",
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
                 ),
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.name,
               ),
               const SizedBox(height: 15),
               TextFormField(
@@ -85,7 +96,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.email_rounded),
                   labelText: "Email",
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -96,7 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     return "Please enter your password";
                   }
                   if (value!.length < 8) {
-                    return "Password should more than 7 character";
+                    return "Password must be atleast 8 characters";
                   }
                   return null;
                 },
@@ -109,13 +122,13 @@ class _SignupScreenState extends State<SignupScreen> {
                         hidePassword = !hidePassword;
                       });
                     },
-                    icon: hidePassword
-                        ? const Icon(Icons.visibility_rounded)
-                        : const Icon(Icons.visibility_off_rounded),
+                    icon: hidePassword ? const Icon(Icons.visibility_rounded) : const Icon(Icons.visibility_off_rounded),
                     splashRadius: 20.0,
                   ),
                   labelText: "Password",
-                  border: const OutlineInputBorder(),
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
                 ),
                 obscureText: hidePassword,
                 keyboardType: TextInputType.text,
@@ -126,8 +139,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (value == "") {
                     return "Please confirm your password";
                   }
-                  if (passwordController.text !=
-                      confirmPasswordController.text) {
+                  if (passwordController.text != confirmPasswordController.text) {
                     return "Password do not match";
                   }
                   return null;
@@ -141,13 +153,13 @@ class _SignupScreenState extends State<SignupScreen> {
                         hideConfirmPassword = !hideConfirmPassword;
                       });
                     },
-                    icon: hideConfirmPassword
-                        ? const Icon(Icons.visibility_rounded)
-                        : const Icon(Icons.visibility_off_rounded),
+                    icon: hideConfirmPassword ? const Icon(Icons.visibility_rounded) : const Icon(Icons.visibility_off_rounded),
                     splashRadius: 20.0,
                   ),
                   labelText: "Confirm Password",
-                  border: const OutlineInputBorder(),
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
                 ),
                 obscureText: hideConfirmPassword,
                 keyboardType: TextInputType.text,
@@ -162,9 +174,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: () {
                   if (formkey.currentState!.validate() == true) {
                     formkey.currentState!.save();
-                    if (!isSigningUp) {
+                    if (!isLoading) {
                       setState(() {
-                        isSigningUp = true;
+                        isLoading = true;
                       });
                       LoadingDialog(context);
                       ApiService()
@@ -176,30 +188,28 @@ class _SignupScreenState extends State<SignupScreen> {
                       )
                           .then((value) {
                         setState(() {
-                          isSigningUp = false;
+                          isLoading = false;
                         });
                         Navigator.pop(context);
-                        if (value["success"] ==
-                            "You have Registered Successfully !!") {
+                        if (value["success"] == "You have Registered Successfully !!") {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => const SigninScreen(),
                             ),
                           );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                "Your are successfully sign up.",
-                              ),
-                            ),
+                          Fluttertoast.showToast(
+                            msg: "Your are successfully sign up.",
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.indigo.shade500,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
                           );
                         } else {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
                               title: const Text("Already registered"),
-                              content: const Text(
-                                  "A user is already registered with this email, please use some other email."),
+                              content: const Text("A user is already registered with this email, please use some other email."),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -217,15 +227,14 @@ class _SignupScreenState extends State<SignupScreen> {
                         }
                       }).onError((error, stackTrace) {
                         setState(() {
-                          isSigningUp = false;
+                          isLoading = false;
                         });
                         Navigator.pop(context);
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text("Something went wrong"),
-                            content: const Text(
-                                "Unable to sign up, please try again."),
+                            content: const Text("Unable to sign up, please try again."),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -246,12 +255,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 },
                 label: "Submit",
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 25.0),
               const Text(
                 "Already have an account?",
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 15.0),
+              const SizedBox(height: 5.0),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pushReplacement(

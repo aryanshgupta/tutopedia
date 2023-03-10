@@ -1,2 +1,2 @@
-const primaryFont = 'Raleway';
-const secondaryFont = 'Gloock';
+const primaryFont = 'Poppins';
+const secondaryFont = 'PoppinsBold';
