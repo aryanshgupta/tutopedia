@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tutopedia/components/main_categories.dart';
 import 'package:tutopedia/components/header.dart';
 import 'package:tutopedia/components/main_courses.dart';
@@ -177,6 +178,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   leading: const Icon(Icons.password_rounded, color: Colors.black),
                   title: const Text(
                     "Change Password",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                    Share.share('Check out Tutopedia, a learning app for students');
+                  },
+                  leading: const Icon(Icons.share, color: Colors.black),
+                  title: const Text(
+                    "Share",
                     style: TextStyle(
                       fontSize: 15.0,
                     ),
