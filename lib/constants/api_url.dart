@@ -31,6 +31,14 @@ class ApiUrl {
     "${baseUrl.toString()}/tutoapi/api/profile",
   );
 
+  static Uri mainCategoriesApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/category",
+  );
+
+  static Uri subCategoriesApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/subcategory",
+  );
+
   static Uri courseListApi = Uri.parse(
     "${baseUrl.toString()}/tutoapi/api/courses",
   );

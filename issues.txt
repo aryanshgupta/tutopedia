@@ -15,9 +15,6 @@ animation
 
 add data into db
 create api structure with all required properties
-add profile field in user model
-
-create color constant
 
 rounded border constant
 
@@ -27,13 +24,11 @@ channel detail and lectures are not receiving
 
 rating
 
-profile photo update alert
-
 alertbox rounded like about alert
 
 otp ui
 
-profile photo on home page
+about alert box
 
 
 

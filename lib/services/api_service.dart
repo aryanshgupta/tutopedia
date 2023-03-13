@@ -5,6 +5,8 @@ import 'package:tutopedia/constants/api_url.dart';
 import 'package:tutopedia/models/course_model.dart';
 import 'package:tutopedia/models/channel_model.dart';
 import 'package:tutopedia/models/lecture_model.dart';
+import 'package:tutopedia/models/main_category_model.dart';
+import 'package:tutopedia/models/sub_category_model.dart';
 
 class ApiService {
   Future<dynamic> signup({
@@ -144,6 +146,50 @@ class ApiService {
     final resBody = await res.stream.bytesToString();
 
     return json.decode(resBody);
+  }
+
+  Future<List<MainCategoryModel>> mainCategories() async {
+    var response = await http.get(
+      ApiUrl.mainCategoriesApi,
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    );
+
+    List<MainCategoryModel> mainCategoryList = [];
+
+    try {
+      List body = json.decode(response.body);
+
+      for (var category in body) {
+        mainCategoryList.add(MainCategoryModel.fromJson(category));
+      }
+
+      return mainCategoryList;
+    } catch (e) {
+      return mainCategoryList;
+    }
+  }
+
+  Future<List<SubCategoryModel>> subCategories(String id) async {
+    var response = await http.get(
+      Uri.parse(
+        "${ApiUrl.subCategoriesApi.toString()}/$id",
+      ),
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    );
+
+    List<SubCategoryModel> subCategoryList = [];
+
+    try {
+      List body = json.decode(response.body);
+
+      for (var category in body) {
+        subCategoryList.add(SubCategoryModel.fromJson(category));
+      }
+
+      return subCategoryList;
+    } catch (e) {
+      return subCategoryList;
+    }
   }
 
   Future<List<CourseModel>> courseList() async {

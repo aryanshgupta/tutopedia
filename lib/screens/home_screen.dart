@@ -4,7 +4,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:tutopedia/components/course_list.dart';
+import 'package:tutopedia/components/main_categories.dart';
+import 'package:tutopedia/components/header.dart';
+import 'package:tutopedia/components/main_courses.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/mycourse_list.dart';
 import 'package:tutopedia/constants/styling.dart';
@@ -421,18 +423,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-                    child: Text(
-                      currentIndex == 0 ? "Courses in our platform" : "Your saved channels ${totalCourses == 0 ? "" : "($totalCourses)"}",
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  currentIndex == 0 ? const CourseList() : const MyCourseList(),
+                  currentIndex == 0
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Header(title: 'Categories'),
+                            MainCategories(),
+                            Header(title: 'Main Courses'),
+                            MainCourses(),
+                          ],
+                        )
+                      : const MyCourseList(),
                 ],
               ),
             ),
@@ -463,8 +464,8 @@ class _HomeScreenState extends State<HomeScreen> {
             items: [
               SalomonBottomBarItem(
                 icon: const Icon(Icons.category_outlined),
-                activeIcon: const Icon(Icons.category_rounded),
-                title: const Text("All Category"),
+                activeIcon: const Icon(Icons.home_rounded),
+                title: const Text("Home"),
               ),
               SalomonBottomBarItem(
                 icon: const Icon(Icons.book_outlined),
