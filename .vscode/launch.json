@@ -5,7 +5,7 @@
             "name": "tutopedia",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "debug"
         },
     ]
 }

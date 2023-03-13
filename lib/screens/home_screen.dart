@@ -58,16 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Stack(
                     children: [
                       authInfoBox.get("profilePhoto").isEmpty
-                          ? CircleAvatar(
+                          ? const CircleAvatar(
                               radius: 70.0,
-                              child: Icon(
-                                Icons.person,
-                                size: 75.0,
-                                color: primaryColor.shade600,
+                              backgroundImage: AssetImage(
+                                "assets/images/avatar.png",
                               ),
                             )
                           : CircleAvatar(
-                              radius: 70,
+                              radius: 70.0,
                               backgroundImage: NetworkImage(
                                 "https://sagecrm.thesagenext.com/tutoapi/${authInfoBox.get("profilePhoto")}",
                               ),
@@ -370,16 +368,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             },
                             child: authInfoBox.get("profilePhoto").isEmpty
-                                ? CircleAvatar(
-                                    radius: 25.0,
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 30.0,
-                                      color: primaryColor.shade600,
+                                ? const CircleAvatar(
+                                    radius: 25,
+                                    backgroundImage: AssetImage(
+                                      "assets/images/avatar.png",
                                     ),
                                   )
                                 : CircleAvatar(
-                                    radius: 25,
+                                    radius: 25.0,
                                     backgroundImage: NetworkImage(
                                       "https://sagecrm.thesagenext.com/tutoapi/${authInfoBox.get("profilePhoto")}",
                                     ),
