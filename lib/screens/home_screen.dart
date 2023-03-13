@@ -73,128 +73,156 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "https://sagecrm.thesagenext.com/tutoapi/${authInfoBox.get("profilePhoto")}",
                               ),
                             ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: IconButton(
-                          onPressed: () {
-                            final ImagePicker picker = ImagePicker();
-                            picker.pickImage(source: ImageSource.gallery).then((image) {
-                              if (image != null) {
-                                if (!isLoading) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  LoadingDialog(context);
-                                  ApiService()
-                                      .changeProfilePhoto(
-                                    imagePath: image.path,
-                                    token: authInfoBox.get("authToken"),
-                                  )
-                                      .then((value) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    Navigator.pop(context);
-                                    if (value["status"] == "profile-updated") {
-                                      // update profile photo url
-                                      // authInfoBox.put('profilePhoto', "");
-                                      Fluttertoast.showToast(
-                                        msg: "Successfully updated the profile photo.",
-                                        gravity: ToastGravity.BOTTOM,
-                                        backgroundColor: primaryColor.shade500,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0,
-                                      );
+                      authInfoBox.get("authToken").isEmpty
+                          ? const SizedBox()
+                          : Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: IconButton(
+                                onPressed: () {
+                                  final ImagePicker picker = ImagePicker();
+                                  picker.pickImage(source: ImageSource.gallery).then((image) {
+                                    if (image != null) {
+                                      if (!isLoading) {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        LoadingDialog(context);
+                                        ApiService()
+                                            .changeProfilePhoto(
+                                          imagePath: image.path,
+                                          token: authInfoBox.get("authToken"),
+                                        )
+                                            .then((value) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.pop(context);
+                                          if (value["status"] == "profile-updated") {
+                                            // update profile photo url
+                                            // authInfoBox.put('profilePhoto', "");
+                                            Fluttertoast.showToast(
+                                              msg: "Successfully updated the profile photo.",
+                                              gravity: ToastGravity.BOTTOM,
+                                              backgroundColor: primaryColor.shade500,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0,
+                                            );
+                                          } else {
+                                            Fluttertoast.showToast(
+                                              msg: "Sorry, unable to update profile photo.",
+                                              gravity: ToastGravity.BOTTOM,
+                                              backgroundColor: primaryColor.shade500,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0,
+                                            );
+                                          }
+                                        }).onError((error, stackTrace) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.pop(context);
+                                          Fluttertoast.showToast(
+                                            msg: "Error, unable to update profile photo.",
+                                            gravity: ToastGravity.BOTTOM,
+                                            backgroundColor: primaryColor.shade500,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0,
+                                          );
+                                        });
+                                      }
                                     } else {
                                       Fluttertoast.showToast(
-                                        msg: "Sorry, unable to update profile photo.",
+                                        msg: "Please choose a profile photo.",
                                         gravity: ToastGravity.BOTTOM,
                                         backgroundColor: primaryColor.shade500,
                                         textColor: Colors.white,
                                         fontSize: 16.0,
                                       );
                                     }
-                                  }).onError((error, stackTrace) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    Navigator.pop(context);
-                                    Fluttertoast.showToast(
-                                      msg: "Error, unable to update profile photo.",
-                                      gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: primaryColor.shade500,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0,
-                                    );
                                   });
-                                }
-                              } else {
-                                Fluttertoast.showToast(
-                                  msg: "Please choose a profile photo.",
-                                  gravity: ToastGravity.BOTTOM,
-                                  backgroundColor: primaryColor.shade500,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0,
-                                );
-                              }
-                            });
-                          },
-                          icon: const Icon(Icons.edit_rounded),
-                          style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all(primaryColor),
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
-                          ),
-                        ),
-                      ),
+                                },
+                                icon: const Icon(Icons.edit_rounded),
+                                style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(primaryColor),
+                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 15.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Text(
-                    authInfoBox.get("name"),
-                    style: const TextStyle(
-                      fontFamily: secondaryFont,
-                      fontSize: 30.0,
-                      color: primaryColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 5.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Text(
-                    authInfoBox.get("email"),
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 15.0),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const ChangePasswordScreen(),
+                authInfoBox.get("authToken").isEmpty ? const SizedBox(height: 5.0) : const SizedBox(height: 15.0),
+                authInfoBox.get("authToken").isEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: TextButton(
+                          onPressed: () {
+                            if (authInfoBox.get("authToken").isEmpty) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const SigninScreen(),
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text("Signin"),
+                        ),
+                      )
+                    : const SizedBox(),
+                // username
+                authInfoBox.get("authToken").isEmpty
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Text(
+                          authInfoBox.get("name"),
+                          style: const TextStyle(
+                            fontFamily: secondaryFont,
+                            fontSize: 30.0,
+                            color: primaryColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    );
-                  },
-                  leading: Icon(
-                    Icons.password_rounded,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
-                  ),
-                  title: const Text(
-                    "Change Password",
-                    style: TextStyle(
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
+                authInfoBox.get("authToken").isEmpty ? const SizedBox() : const SizedBox(height: 5.0),
+                // email
+                authInfoBox.get("authToken").isEmpty
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Text(
+                          authInfoBox.get("email"),
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                authInfoBox.get("authToken").isEmpty ? const SizedBox() : const SizedBox(height: 15.0),
+                // change password
+                authInfoBox.get("authToken").isEmpty
+                    ? const SizedBox()
+                    : ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ChangePasswordScreen(),
+                            ),
+                          );
+                        },
+                        leading: Icon(
+                          Icons.password_rounded,
+                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                        ),
+                        title: const Text(
+                          "Change Password",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
                 ListTile(
                   onTap: () {
                     AdaptiveThemeMode currentThemeMode = AdaptiveTheme.of(context).mode;
@@ -226,91 +254,94 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                ListTile(
-                  onTap: () {
-                    if (!isLoading) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      LoadingDialog(context);
-                      ApiService().signOut(authInfoBox.get("authToken")).then((value) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        Navigator.pop(context);
-                        if (value["success"] == "logged out successfully") {
-                          authInfoBox.put('name', "");
-                          authInfoBox.put('email', "");
-                          authInfoBox.put('profilePhoto', "");
-                          authInfoBox.put('authToken', "");
+                // signout
+                authInfoBox.get("authToken").isEmpty
+                    ? const SizedBox()
+                    : ListTile(
+                        onTap: () {
+                          if (!isLoading) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            LoadingDialog(context);
+                            ApiService().signOut(authInfoBox.get("authToken")).then((value) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.pop(context);
+                              if (value["success"] == "logged out successfully") {
+                                authInfoBox.put('name', "");
+                                authInfoBox.put('email', "");
+                                authInfoBox.put('profilePhoto', "");
+                                authInfoBox.put('authToken', "");
 
-                          Navigator.pop(context);
-                          Fluttertoast.showToast(
-                            msg: "Your are successfully sign out.",
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: primaryColor.shade500,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text("Something went wrong"),
-                              content: const Text("Unable to sign out, please try again."),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Okay"),
-                                )
-                              ],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
-                            ),
-                          );
-                        }
-                      }).onError((error, stackTrace) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        Navigator.pop(context);
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Something went wrong"),
-                            content: const Text("Unable to sign in, please try again."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Okay"),
-                              )
-                            ],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
+                                Navigator.pop(context);
+                                Fluttertoast.showToast(
+                                  msg: "Your are successfully sign out.",
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: primaryColor.shade500,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text("Something went wrong"),
+                                    content: const Text("Unable to sign out, please try again."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("Okay"),
+                                      )
+                                    ],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                    ),
+                                    actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
+                                  ),
+                                );
+                              }
+                            }).onError((error, stackTrace) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text("Something went wrong"),
+                                  content: const Text("Unable to sign in, please try again."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Okay"),
+                                    )
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                  actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
+                                ),
+                              );
+                            });
+                          }
+                        },
+                        leading: Icon(
+                          Icons.login_rounded,
+                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                        ),
+                        title: const Text(
+                          "Signout",
+                          style: TextStyle(
+                            fontSize: 15.0,
                           ),
-                        );
-                      });
-                    }
-                  },
-                  leading: Icon(
-                    Icons.login_rounded,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
-                  ),
-                  title: const Text(
-                    "Signout",
-                    style: TextStyle(
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
+                        ),
+                      ),
                 AboutListTile(
                   applicationName: appName,
                   applicationVersion: appVersion,
@@ -407,15 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Builder(builder: (context) {
                           return GestureDetector(
                             onTap: () {
-                              if (authInfoBox.get("authToken").isEmpty) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const SigninScreen(),
-                                  ),
-                                );
-                              } else {
-                                Scaffold.of(context).openDrawer();
-                              }
+                              Scaffold.of(context).openDrawer();
                             },
                             child: authInfoBox.get("profilePhoto").isEmpty
                                 ? const CircleAvatar(
