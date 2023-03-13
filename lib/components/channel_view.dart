@@ -102,9 +102,9 @@ class _ChannelViewState extends State<ChannelView> {
                         ),
                         Text(
                           widget.channelList[index].channelName,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 10.0,
-                            color: Colors.black45,
+                            color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -121,19 +121,19 @@ class _ChannelViewState extends State<ChannelView> {
                         ),
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.person,
                               size: 12.0,
-                              color: Colors.black45,
+                              color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
                             ),
                             const SizedBox(width: 5.0),
                             Text(
                               int.parse(widget.channelList[index].studentEnrolled) >= 2
                                   ? "${widget.channelList[index].studentEnrolled} students"
                                   : "${widget.channelList[index].studentEnrolled} student",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 10.0,
-                                color: Colors.black45,
+                                color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,

@@ -17,17 +17,16 @@ class SubCategoryScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           ),
           splashRadius: 25.0,
         ),
-        backgroundColor: Colors.white,
         title: Text(
           category.title,
-          style: const TextStyle(
-            color: Colors.black,
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           ),
         ),
         centerTitle: true,

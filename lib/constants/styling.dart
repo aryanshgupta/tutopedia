@@ -3,4 +3,4 @@ import 'package:flutter/material.dart';
 const primaryFont = 'Poppins';
 const secondaryFont = 'PoppinsBold';
 
-const primaryColor = Colors.indigo;
+const primaryColor = Colors.deepPurple;

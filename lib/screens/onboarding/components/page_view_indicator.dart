@@ -17,7 +17,11 @@ class PageViewIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         color: currentPage == page ? primaryColor.shade100 : Colors.grey,
         border: Border.all(
-          color: currentPage == page ? Colors.black : Colors.grey,
+          color: currentPage == page
+              ? Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black
+              : Colors.grey,
           width: currentPage == page ? 2.5 : 0,
         ),
         shape: BoxShape.circle,

@@ -37,17 +37,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           ),
           splashRadius: 25.0,
         ),
-        backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           "Create New Password",
           style: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           ),
         ),
         centerTitle: true,
@@ -179,10 +178,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     child: const Text("Okay"),
                                   )
                                 ],
-                                backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(25.0),
                                 ),
+                                actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                               ),
                             );
                           } else {
@@ -199,10 +198,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     child: const Text("Okay"),
                                   )
                                 ],
-                                backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(25.0),
                                 ),
+                                actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                               ),
                             );
                           }
@@ -224,10 +223,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   child: const Text("Okay"),
                                 )
                               ],
-                              backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(25.0),
                               ),
+                              actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                             ),
                           );
                         });

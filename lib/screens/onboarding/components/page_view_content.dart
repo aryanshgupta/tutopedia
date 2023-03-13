@@ -31,8 +31,8 @@ class PageViewContent extends StatelessWidget {
             const SizedBox(height: 20.0),
             Text(
               title,
-              style: const TextStyle(
-                color: Colors.black87,
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black87,
                 fontSize: 25.0,
               ),
               textAlign: TextAlign.center,
@@ -40,8 +40,8 @@ class PageViewContent extends StatelessWidget {
             if (subtitle.isNotEmpty)
               Text(
                 subtitle,
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   fontWeight: FontWeight.w500,
                   fontSize: 25.0,
                   fontFamily: secondaryFont,
@@ -61,8 +61,8 @@ class PageViewContent extends StatelessWidget {
                 ),
                 Text(
                   hightLightedText,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w500,
                     fontSize: 25.0,
                     fontFamily: secondaryFont,

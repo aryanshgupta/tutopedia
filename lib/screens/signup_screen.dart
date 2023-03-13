@@ -47,14 +47,14 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     text: "Welcome!",
-                    children: [
+                    children: const [
                       TextSpan(text: "\nSign up to continue!"),
                     ],
                     style: TextStyle(
                       fontSize: 30.0,
-                      color: Colors.black,
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                       fontWeight: FontWeight.w500,
                       fontFamily: secondaryFont,
                     ),
@@ -220,10 +220,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                     child: const Text("Okay"),
                                   )
                                 ],
-                                backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(25.0),
                                 ),
+                                actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                               ),
                             );
                           }
@@ -245,10 +245,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                   child: const Text("Okay"),
                                 )
                               ],
-                              backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(25.0),
                               ),
+                              actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                             ),
                           );
                         });

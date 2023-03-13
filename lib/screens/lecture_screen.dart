@@ -66,17 +66,16 @@ class _LectureScreenState extends State<LectureScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    color: Colors.black,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   ),
                   splashRadius: 25.0,
                 ),
-                backgroundColor: Colors.white,
-                title: const Text(
+                title: Text(
                   "Details",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   ),
                 ),
                 centerTitle: true,
@@ -125,7 +124,10 @@ class _LectureScreenState extends State<LectureScreen> {
                         });
                       }
                     },
-                    icon: const Icon(Icons.bookmark_added),
+                    icon: Icon(
+                      Icons.bookmark_added,
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -160,9 +162,9 @@ class _LectureScreenState extends State<LectureScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                     child: Text(
                                       widget.channel.channelName,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16.0,
-                                        color: Colors.black45,
+                                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
                                       ),
                                     ),
                                   ),
@@ -178,9 +180,9 @@ class _LectureScreenState extends State<LectureScreen> {
                                             const SizedBox(width: 5.0),
                                             Text(
                                               snapshot.data![currentLectureIndex].time,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 15.0,
-                                                color: Colors.black87,
+                                                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black87,
                                               ),
                                             ),
                                           ],
@@ -191,9 +193,9 @@ class _LectureScreenState extends State<LectureScreen> {
                                             const SizedBox(width: 5.0),
                                             Text(
                                               "${DateTime.parse(snapshot.data![currentLectureIndex].updatedAt).day.toString()}.${DateTime.parse(snapshot.data![currentLectureIndex].updatedAt).month.toString()}.${DateTime.parse(snapshot.data![currentLectureIndex].updatedAt).year.toString()}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 15.0,
-                                                color: Colors.black87,
+                                                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black87,
                                               ),
                                             ),
                                           ],
@@ -206,9 +208,9 @@ class _LectureScreenState extends State<LectureScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                     child: Text(
                                       snapshot.data![currentLectureIndex].description,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 18.0,
-                                        color: Colors.black45,
+                                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black45,
                                       ),
                                     ),
                                   ),
@@ -229,7 +231,11 @@ class _LectureScreenState extends State<LectureScreen> {
                                         horizontal: 15.0,
                                         vertical: 5.0,
                                       ),
-                                      color: snapshot.data![currentLectureIndex] == item ? primaryColor.shade100 : Colors.grey.shade200,
+                                      color: snapshot.data![currentLectureIndex] == item
+                                          ? primaryColor.shade100
+                                          : Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.grey.shade800
+                                              : Colors.grey.shade200,
                                       elevation: 0.0,
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
@@ -275,16 +281,25 @@ class _LectureScreenState extends State<LectureScreen> {
                                                   children: [
                                                     Text(
                                                       "Lecture ${snapshot.data!.indexOf(item) + 1}",
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                         fontSize: 16.0,
+                                                        color: Theme.of(context).brightness == Brightness.dark
+                                                            ? snapshot.data![currentLectureIndex] == item
+                                                                ? Colors.black87
+                                                                : Colors.white
+                                                            : Colors.black,
                                                       ),
                                                     ),
                                                     const SizedBox(height: 2.5),
                                                     Text(
                                                       item.title,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                         fontSize: 14.0,
-                                                        color: Colors.black45,
+                                                        color: Theme.of(context).brightness == Brightness.dark
+                                                            ? snapshot.data![currentLectureIndex] == item
+                                                                ? Colors.black54
+                                                                : Colors.white54
+                                                            : Colors.black45,
                                                       ),
                                                     )
                                                   ],

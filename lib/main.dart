@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,33 +15,54 @@ void main() async {
   await Hive.openBox("app_log");
   await Hive.openBox("auth_info");
   await Hive.openBox("my_courses");
-  runApp(const MyApp());
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  runApp(MyApp(savedThemeMode));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AdaptiveThemeMode? savedThemeMode;
+  const MyApp(
+    this.savedThemeMode, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Tutopedia',
-      theme: ThemeData(
+    return AdaptiveTheme(
+      light: ThemeData(
+        brightness: Brightness.light,
         primaryColor: primaryColor,
+        primarySwatch: primaryColor,
         fontFamily: primaryFont,
         useMaterial3: true,
       ),
-      debugShowCheckedModeBanner: false,
-      home: ValueListenableBuilder(
-        valueListenable: Hive.box('app_log').listenable(),
-        builder: (context, appLogBox, child) {
-          bool? visitStatus = appLogBox.get('visitStatus');
-          if (visitStatus != null && visitStatus) {
-            return const HomeScreen();
-          } else {
-            return const OnboardingScreen();
-          }
-        },
+      dark: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: primaryColor,
+        primarySwatch: primaryColor,
+        fontFamily: primaryFont,
+        useMaterial3: true,
       ),
+      initial: savedThemeMode ?? AdaptiveThemeMode.system,
+      builder: (ThemeData lightTheme, ThemeData darkTheme) {
+        return MaterialApp(
+          title: 'Tutopedia',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          debugShowCheckedModeBanner: false,
+          home: ValueListenableBuilder(
+            valueListenable: Hive.box('app_log').listenable(),
+            builder: (context, appLogBox, child) {
+              bool? visitStatus = appLogBox.get('visitStatus');
+              if (visitStatus != null && visitStatus) {
+                return const HomeScreen();
+              } else {
+                return const OnboardingScreen();
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }

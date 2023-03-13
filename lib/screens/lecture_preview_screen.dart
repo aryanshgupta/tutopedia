@@ -32,17 +32,16 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios_new_rounded,
-                color: Colors.black,
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
               ),
               splashRadius: 25.0,
             ),
-            backgroundColor: Colors.white,
-            title: const Text(
+            title: Text(
               "Details",
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
               ),
             ),
             centerTitle: true,
@@ -79,9 +78,9 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Text(
                             widget.channel.channelName,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16.0,
-                              color: Colors.black45,
+                              color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
                             ),
                           ),
                         ),

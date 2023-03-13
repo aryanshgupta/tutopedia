@@ -12,18 +12,18 @@ class Header extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           text: "Choose by",
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 15.0,
             fontFamily: primaryFont,
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           ),
           children: [
             TextSpan(
               text: "\n$title",
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: secondaryFont,
                 fontSize: 25.0,
-                color: Colors.black,
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
               ),
             ),
           ],

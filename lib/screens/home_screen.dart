@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -10,6 +11,7 @@ import 'package:tutopedia/components/header.dart';
 import 'package:tutopedia/components/main_courses.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/mycourse_list.dart';
+import 'package:tutopedia/components/theme_changer.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/change_password_screen.dart';
 import 'package:tutopedia/screens/search_course_screen.dart';
@@ -166,9 +168,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Text(
                     authInfoBox.get("email"),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.0,
-                      color: Colors.black45,
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -182,7 +184,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   },
-                  leading: const Icon(Icons.password_rounded, color: Colors.black),
+                  leading: Icon(
+                    Icons.password_rounded,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                  ),
                   title: const Text(
                     "Change Password",
                     style: TextStyle(
@@ -192,9 +197,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 ListTile(
                   onTap: () {
+                    AdaptiveThemeMode currentThemeMode = AdaptiveTheme.of(context).mode;
+                    ThemeChange(context, currentThemeMode);
+                  },
+                  leading: Icon(
+                    Icons.palette_outlined,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                  ),
+                  title: const Text(
+                    "Theme",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
                     Share.share('Check out Tutopedia, a learning app for students');
                   },
-                  leading: const Icon(Icons.share, color: Colors.black),
+                  leading: Icon(
+                    Icons.share,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                  ),
                   title: const Text(
                     "Share",
                     style: TextStyle(
@@ -242,10 +266,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: const Text("Okay"),
                                 )
                               ],
-                              backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(25.0),
                               ),
+                              actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                             ),
                           );
                         }
@@ -267,16 +291,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: const Text("Okay"),
                               )
                             ],
-                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
+                            actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                           ),
                         );
                       });
                     }
                   },
-                  leading: const Icon(Icons.login_rounded, color: Colors.black),
+                  leading: Icon(
+                    Icons.login_rounded,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                  ),
                   title: const Text(
                     "Signout",
                     style: TextStyle(
@@ -295,7 +322,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Image.asset("assets/images/app_icon.png"),
                     ),
                   ),
-                  icon: const Icon(Icons.info_outline_rounded, color: Colors.black),
+                  icon: Icon(
+                    Icons.info_outline_rounded,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                  ),
                   child: const Text(
                     "About",
                     style: TextStyle(
@@ -336,10 +366,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: const Text("Yes"),
                         ),
                       ],
-                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
+                      actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                     );
                   },
                 );
@@ -355,19 +385,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         RichText(
                           text: TextSpan(
                             text: authInfoBox.get("name").isEmpty ? "Welcome" : "Hi, ${authInfoBox.get("name").split(" ")[0]}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: secondaryFont,
                               fontSize: 30.0,
-                              color: Colors.black,
+                              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                             ),
-                            children: const [
+                            children: [
                               TextSpan(
                                 text: "\nWhat do you wanna learn today?",
                                 style: TextStyle(
                                   fontFamily: primaryFont,
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.black54,
+                                  color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : Colors.black54,
                                 ),
                               ),
                             ],
