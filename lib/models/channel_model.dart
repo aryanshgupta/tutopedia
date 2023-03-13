@@ -21,7 +21,7 @@ class ChannelModel {
 
   factory ChannelModel.fromJson(Map<String, dynamic> json) {
     return ChannelModel(
-      id: json['_id'] ?? "",
+      id: json['id'] ?? "",
       title: json['title'] ?? "",
       channelName: json['channel_name'] ?? "",
       uploadedBy: json['uploaded_by'] ?? "",

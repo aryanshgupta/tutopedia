@@ -30,6 +30,10 @@ otp ui
 
 about alert box
 
+dispose controllers
+
+loading height of main cate and main course
+
 
 
 

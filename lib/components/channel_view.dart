@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
 import 'package:tutopedia/models/channel_model.dart';
+import 'package:tutopedia/screens/lecture_preview_screen.dart';
 import 'package:tutopedia/screens/lecture_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 
@@ -46,13 +47,29 @@ class _ChannelViewState extends State<ChannelView> {
                 ),
               );
             } else {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => LectureScreen(
-                    channel: widget.channelList[index],
+              var myCoursesBox = Hive.box('my_courses');
+              List<String> idList = myCoursesBox.get('idList') ?? [];
+              bool isEnrolled = false;
+              if (idList.isNotEmpty) {
+                isEnrolled = idList.contains(widget.channelList[index].id);
+              }
+              if (isEnrolled) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LectureScreen(
+                      channel: widget.channelList[index],
+                    ),
                   ),
-                ),
-              );
+                );
+              } else {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LecturePreviewScreen(
+                      channel: widget.channelList[index],
+                    ),
+                  ),
+                );
+              }
             }
           },
           child: SizedBox(
