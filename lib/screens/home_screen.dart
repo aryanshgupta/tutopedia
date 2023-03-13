@@ -97,6 +97,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     if (value["status"] == "profile-updated") {
                                       // update profile photo url
                                       // authInfoBox.put('profilePhoto', "");
+                                      Fluttertoast.showToast(
+                                        msg: "Successfully updated the profile photo.",
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: primaryColor.shade500,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0,
+                                      );
                                     } else {
                                       Fluttertoast.showToast(
                                         msg: "Sorry, unable to update profile photo.",
