@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         fontFamily: primaryFont,
         useMaterial3: true,
       ),
-      initial: savedThemeMode ?? AdaptiveThemeMode.system,
+      initial: savedThemeMode ?? AdaptiveThemeMode.light,
       builder: (ThemeData lightTheme, ThemeData darkTheme) {
         return MaterialApp(
           title: 'Tutopedia',
