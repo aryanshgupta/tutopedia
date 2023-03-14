@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/sub_categories_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
