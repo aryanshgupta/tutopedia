@@ -89,7 +89,7 @@ class MainCategories extends StatelessWidget {
             );
           } else {
             return SizedBox(
-              height: MediaQuery.of(context).size.height - 305.0,
+              height: 130.0,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +113,7 @@ class MainCategories extends StatelessWidget {
           }
         } else if (snapshot.hasError) {
           return SizedBox(
-            height: MediaQuery.of(context).size.height - 305.0,
+            height: 130.0,
             width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -136,7 +136,7 @@ class MainCategories extends StatelessWidget {
           );
         } else {
           return SizedBox(
-            height: MediaQuery.of(context).size.height - 305.0,
+            height: 130.0,
             width: MediaQuery.of(context).size.width,
             child: const SpinKitThreeInOut(
               color: primaryColor,
