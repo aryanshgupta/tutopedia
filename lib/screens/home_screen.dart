@@ -96,9 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             isLoading = false;
                                           });
                                           Navigator.pop(context);
-                                          if (value["status"] == "profile-updated") {
-                                            // update profile photo url
-                                            // authInfoBox.put('profilePhoto', "");
+                                          if (value["success"] == "profile-updated") {
+                                            authInfoBox.put('profilePhoto', value["profile_image"]);
                                             Fluttertoast.showToast(
                                               msg: "Successfully updated the profile photo.",
                                               gravity: ToastGravity.BOTTOM,
