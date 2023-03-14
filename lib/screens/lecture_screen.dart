@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/constants/styling.dart';
@@ -18,6 +20,10 @@ class LectureScreen extends StatefulWidget {
 }
 
 class _LectureScreenState extends State<LectureScreen> {
+  var myCoursesBox = Hive.box('my_courses');
+
+  double rating = 0.0;
+
   late YoutubePlayerController ytPlayerController;
 
   int currentLectureIndex = 0;
@@ -34,6 +40,10 @@ class _LectureScreenState extends State<LectureScreen> {
         autoPlay: false,
       ),
     );
+    Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+    if (courseList.isNotEmpty) {
+      rating = courseList[widget.channel.id];
+    }
     super.initState();
   }
 
@@ -89,8 +99,7 @@ class _LectureScreenState extends State<LectureScreen> {
                         });
                         LoadingDialog(context);
 
-                        var myCoursesBox = Hive.box('my_courses');
-                        List<String> idList = myCoursesBox.get('idList') ?? [];
+                        Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
 
                         ApiService()
                             .deleteCourse(
@@ -104,9 +113,8 @@ class _LectureScreenState extends State<LectureScreen> {
                           Navigator.pop(context);
 
                           if (value["success"] == "MyCourse Removed Successfully" || value["message"] == "Call to a member function delete() on null") {
-                            if (idList.remove(widget.channel.id)) {
-                              myCoursesBox.put("idList", idList);
-                            }
+                            courseList.remove(widget.channel.id);
+                            myCoursesBox.put("courseList", courseList);
 
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -160,12 +168,116 @@ class _LectureScreenState extends State<LectureScreen> {
                                   const SizedBox(height: 5.0),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                    child: Text(
-                                      widget.channel.channelName,
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          widget.channel.channelName,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
+                                          ),
+                                        ),
+                                        RatingBar(
+                                          initialRating: rating,
+                                          allowHalfRating: true,
+                                          glowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
+                                          itemSize: 25.0,
+                                          ratingWidget: RatingWidget(
+                                            full: const Icon(
+                                              Icons.star_rate_rounded,
+                                              color: Colors.amber,
+                                            ),
+                                            half: const Icon(
+                                              Icons.star_half_rounded,
+                                              color: Colors.amber,
+                                            ),
+                                            empty: const Icon(
+                                              Icons.star_border_rounded,
+                                              color: Colors.amber,
+                                            ),
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            if (!isLoading) {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                              LoadingDialog(context);
+                                              ApiService()
+                                                  .rateCourse(
+                                                rating: rating,
+                                                channelId: widget.channel.id,
+                                                token: authInfoBox.get("authToken"),
+                                              )
+                                                  .then((value) {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                if (value["success"] == "rating updated successfully ") {
+                                                  Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+
+                                                  courseList[widget.channel.id] = rating;
+
+                                                  myCoursesBox.put("courseList", courseList);
+
+                                                  Fluttertoast.showToast(
+                                                    msg: "Successfully rated the course.",
+                                                    gravity: ToastGravity.BOTTOM,
+                                                    backgroundColor: primaryColor.shade500,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0,
+                                                  );
+                                                } else {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) => AlertDialog(
+                                                      title: const Text("Something went wrong"),
+                                                      content: const Text("Unable to rate the course, please try again."),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Text("Okay"),
+                                                        )
+                                                      ],
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(25.0),
+                                                      ),
+                                                      actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
+                                                    ),
+                                                  );
+                                                }
+                                              }).onError((error, stackTrace) {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) => AlertDialog(
+                                                    title: const Text("Something went wrong"),
+                                                    content: const Text("Unable to rate the course, please try again."),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: const Text("Okay"),
+                                                      )
+                                                    ],
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(25.0),
+                                                    ),
+                                                    actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
+                                                  ),
+                                                );
+                                              });
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   const SizedBox(height: 20.0),

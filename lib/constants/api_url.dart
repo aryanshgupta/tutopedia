@@ -62,4 +62,8 @@ class ApiUrl {
   static Uri deleteCourseApi = Uri.parse(
     "${baseUrl.toString()}/tutoapi/api/remove/my/course",
   );
+
+  static Uri rateCourseApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/channel/rating",
+  );
 }

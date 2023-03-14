@@ -155,7 +155,7 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
                     LoadingDialog(context);
 
                     var myCoursesBox = Hive.box('my_courses');
-                    List<String> idList = myCoursesBox.get('idList') ?? [];
+                    Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
 
                     ApiService()
                         .addCourse(
@@ -168,9 +168,9 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
                       });
                       Navigator.pop(context);
                       if (value["success"] == "Course Add Successfully To My Course" || value["error"] == "Already Add To My Course") {
-                        idList.add(widget.channel.id);
+                        courseList[widget.channel.id] = 0.0;
 
-                        myCoursesBox.put("idList", idList);
+                        myCoursesBox.put("courseList", courseList);
 
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(

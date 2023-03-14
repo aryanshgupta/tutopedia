@@ -4,25 +4,13 @@ rebuild of tabs on changes
 refresher to rebuild tabs
 comment code
 add gridview max item not fix
-onboarding page svg image
 mycouse max element 4
 text field focus color
 
-share
-enroll page
-theme
+
 animation
 
-add data into db
-create api structure with all required properties
-
-rounded border constant
-
 after updating profile photo it should return the url and then reflect changes on ui
-
-channel detail and lectures are not receiving
-
-rating
 
 alertbox rounded like about alert
 
@@ -34,10 +22,13 @@ dispose controllers
 
 loading height of main cate and main course
 
+image loading placeholder for profile photo
 
+app icon
 
+show total courses
 
-
+remove pop up after sign out
 
 
 

@@ -521,7 +521,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   var myCoursesBox = Hive.box('my_courses');
                   setState(() {
                     currentIndex = i;
-                    totalCourses = myCoursesBox.get('idList') != null ? myCoursesBox.get('idList').length : 0;
+                    totalCourses = myCoursesBox.get('courseList') != null ? myCoursesBox.get('courseList').length : 0;
                   });
                 }
               } else {

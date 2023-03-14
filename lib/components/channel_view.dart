@@ -48,10 +48,10 @@ class _ChannelViewState extends State<ChannelView> {
               );
             } else {
               var myCoursesBox = Hive.box('my_courses');
-              List<String> idList = myCoursesBox.get('idList') ?? [];
+              Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
               bool isEnrolled = false;
-              if (idList.isNotEmpty) {
-                isEnrolled = idList.contains(widget.channelList[index].id);
+              if (courseList.isNotEmpty) {
+                isEnrolled = courseList.containsKey(widget.channelList[index].id);
               }
               if (isEnrolled) {
                 Navigator.of(context).push(

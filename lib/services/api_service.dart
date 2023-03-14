@@ -337,4 +337,29 @@ class ApiService {
       return null;
     }
   }
+
+  Future<dynamic> rateCourse({
+    required double rating,
+    required String channelId,
+    required String token,
+  }) async {
+    try {
+      var response = await http.post(
+        ApiUrl.rateCourseApi,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          "star_rated": rating,
+          "channel_id": channelId,
+        }),
+      );
+
+      return json.decode(response.body);
+    } catch (e) {
+      return null;
+    }
+  }
 }

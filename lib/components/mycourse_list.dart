@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tutopedia/components/channel_view.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
@@ -51,69 +51,74 @@ class _MyCourseListState extends State<MyCourseList> {
         ),
       );
     } else {
-      return FutureBuilder(
-        future: ApiService().myCourses(authInfoBox.get("authToken")),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data!.isNotEmpty) {
-              return ChannelView(
-                channelList: snapshot.data!,
-                shrinkWrap: true,
-              );
-            } else {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height - 305.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/svg/no_data.svg',
-                      width: MediaQuery.of(context).size.width * 0.70,
+      return ValueListenableBuilder(
+        valueListenable: Hive.box('my_courses').listenable(),
+        builder: (context, myCoursesBox, child) {
+          return FutureBuilder(
+            future: ApiService().myCourses(authInfoBox.get("authToken")),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.isNotEmpty) {
+                  return ChannelView(
+                    channelList: snapshot.data!,
+                    shrinkWrap: true,
+                  );
+                } else {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height - 305.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/svg/no_data.svg',
+                          width: MediaQuery.of(context).size.width * 0.70,
+                        ),
+                        const SizedBox(height: 20.0),
+                        const Text(
+                          "Sorry, no saved courses found",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20.0,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 20.0),
-                    const Text(
-                      "Sorry, no saved courses found",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20.0,
+                  );
+                }
+              } else if (snapshot.hasError) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height - 305.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/svg/error.svg',
+                        width: MediaQuery.of(context).size.width * 0.80,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
-            }
-          } else if (snapshot.hasError) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height - 305.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/svg/error.svg',
-                    width: MediaQuery.of(context).size.width * 0.80,
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        "Sorry, something went wrong!",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    "Sorry, something went wrong!",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20.0,
-                    ),
-                    textAlign: TextAlign.center,
+                );
+              } else {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height - 305.0,
+                  child: const SpinKitThreeInOut(
+                    color: primaryColor,
+                    size: 50.0,
                   ),
-                ],
-              ),
-            );
-          } else {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height - 305.0,
-              child: const SpinKitThreeInOut(
-                color: primaryColor,
-                size: 50.0,
-              ),
-            );
-          }
+                );
+              }
+            },
+          );
         },
       );
     }
