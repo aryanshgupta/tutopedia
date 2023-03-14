@@ -91,23 +91,12 @@ class MainCategories extends StatelessWidget {
             return SizedBox(
               height: 130.0,
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/svg/no_data.svg',
-                    width: MediaQuery.of(context).size.width * 0.70,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    "Sorry, no category found",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20.0,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              child: const Tooltip(
+                message: "Sorry, no main category found.",
+                child: Icon(
+                  Icons.error_outline_rounded,
+                  size: 50.0,
+                ),
               ),
             );
           }
@@ -115,23 +104,12 @@ class MainCategories extends StatelessWidget {
           return SizedBox(
             height: 130.0,
             width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/svg/error.svg',
-                  width: MediaQuery.of(context).size.width * 0.80,
-                ),
-                const SizedBox(height: 20.0),
-                const Text(
-                  "Sorry, something went wrong!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20.0,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: const Tooltip(
+              message: "Sorry, something went wrong!",
+              child: Icon(
+                Icons.error_outline_rounded,
+                size: 50.0,
+              ),
             ),
           );
         } else {

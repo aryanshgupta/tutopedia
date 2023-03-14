@@ -55,7 +55,7 @@ class _TrendingTopicsState extends State<TrendingTopics> {
               height: 55.0,
               width: MediaQuery.of(context).size.width,
               child: const Tooltip(
-                message: "Sorry, no courses found.",
+                message: "Sorry, no trending topics found.",
                 child: Icon(
                   Icons.error_outline_rounded,
                   size: 50.0,
@@ -67,20 +67,12 @@ class _TrendingTopicsState extends State<TrendingTopics> {
           return SizedBox(
             height: 55.0,
             width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.error_outline_rounded),
-                SizedBox(height: 20.0),
-                Text(
-                  "Sorry, something went wrong!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20.0,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: const Tooltip(
+              message: "Sorry, something went wrong!",
+              child: Icon(
+                Icons.error_outline_rounded,
+                size: 50.0,
+              ),
             ),
           );
         } else {

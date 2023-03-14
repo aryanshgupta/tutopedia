@@ -52,9 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, authInfoBox, child) {
         return Scaffold(
           drawer: Drawer(
-            child: ListView(
+            child: Column(
               children: [
-                const SizedBox(height: 25.0),
+                const SizedBox(height: 50.0),
                 Container(
                   alignment: Alignment.center,
                   child: Stack(
@@ -342,26 +342,59 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                AboutListTile(
-                  applicationName: appName,
-                  applicationVersion: appVersion,
-                  applicationIcon: SizedBox(
-                    height: 50.0,
-                    width: 50.0,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-                      child: Image.asset("assets/images/app_icon.png"),
-                    ),
-                  ),
-                  icon: Icon(
+                ListTile(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        icon: CircleAvatar(
+                          radius: 50.0,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+                            child: Image.asset(
+                              "assets/images/app_icon.png",
+                            ),
+                          ),
+                        ),
+                        title: Text(appName),
+                        content: const Text(
+                          "Tutopedia is online e-learning platform for students.",
+                          textAlign: TextAlign.center,
+                        ),
+                        iconPadding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
+                        titlePadding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
+                        contentPadding: const EdgeInsets.all(15.0),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Close"),
+                          )
+                        ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
+                      ),
+                    );
+                  },
+                  leading: Icon(
                     Icons.info_outline_rounded,
                     color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   ),
-                  child: const Text(
+                  title: const Text(
                     "About",
                     style: TextStyle(
                       fontSize: 15.0,
                     ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    alignment: Alignment.bottomCenter,
+                    child: Text(appVersion),
                   ),
                 ),
               ],
