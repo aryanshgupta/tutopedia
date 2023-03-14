@@ -1,15 +1,15 @@
-class CourseModel {
+class TopicModel {
   final String id;
   final String title;
   final String image;
-  CourseModel({
+  TopicModel({
     required this.id,
     required this.title,
     required this.image,
   });
 
-  factory CourseModel.fromJson(Map<String, dynamic> json) {
-    return CourseModel(
+  factory TopicModel.fromJson(Map<String, dynamic> json) {
+    return TopicModel(
       id: json['_id'] ?? "",
       title: json['name'] ?? "",
       image: "assets/images/${json['name'].toString().toLowerCase()}.png",

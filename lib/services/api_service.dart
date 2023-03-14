@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:tutopedia/constants/api_url.dart';
-import 'package:tutopedia/models/course_model.dart';
+import 'package:tutopedia/models/topic_model.dart';
 import 'package:tutopedia/models/channel_model.dart';
 import 'package:tutopedia/models/lecture_model.dart';
 import 'package:tutopedia/models/main_category_model.dart';
@@ -192,31 +192,33 @@ class ApiService {
     }
   }
 
-  Future<List<CourseModel>> courseList() async {
+  Future<List<TopicModel>> topicList(String id) async {
     var response = await http.get(
-      ApiUrl.courseListApi,
+      Uri.parse(
+        "${ApiUrl.topicListApi.toString()}/$id",
+      ),
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     );
 
-    List<CourseModel> courseList = [];
+    List<TopicModel> topicList = [];
 
     try {
       List body = json.decode(response.body);
 
-      for (var course in body) {
-        courseList.add(CourseModel.fromJson(course));
+      for (var topic in body) {
+        topicList.add(TopicModel.fromJson(topic));
       }
 
-      return courseList;
+      return topicList;
     } catch (e) {
-      return courseList;
+      return topicList;
     }
   }
 
-  Future<List<ChannelModel>> channelList(String id) async {
+  Future<List<ChannelModel>> channelListByTopicId(String id) async {
     var response = await http.get(
       Uri.parse(
-        "${ApiUrl.channelListApi.toString()}/$id",
+        "${ApiUrl.channelListByTopicIdApi.toString()}/$id",
       ),
       headers: {
         'Content-Type': 'application/json',

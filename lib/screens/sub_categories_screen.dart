@@ -3,11 +3,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/main_category_model.dart';
+import 'package:tutopedia/screens/topic_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class SubCategoryScreen extends StatelessWidget {
-  final MainCategoryModel category;
-  const SubCategoryScreen({super.key, required this.category});
+  final MainCategoryModel mainCategory;
+  const SubCategoryScreen({super.key, required this.mainCategory});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class SubCategoryScreen extends StatelessWidget {
           splashRadius: 25.0,
         ),
         title: Text(
-          category.title,
+          mainCategory.title,
           style: TextStyle(
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           ),
@@ -34,7 +35,7 @@ class SubCategoryScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: ApiService().subCategories(category.id),
+          future: ApiService().subCategories(mainCategory.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data!.isNotEmpty) {
@@ -43,6 +44,15 @@ class SubCategoryScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(snapshot.data![index].title),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TopicScreen(
+                              subCategory: snapshot.data![index],
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                 );

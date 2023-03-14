@@ -74,7 +74,7 @@ class SearchChannelScreen extends SearchDelegate {
       );
     } else {
       return FutureBuilder(
-        future: ApiService().channelList(channelId),
+        future: ApiService().channelListByTopicId(channelId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
@@ -170,7 +170,7 @@ class SearchChannelScreen extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
-      future: ApiService().channelList(channelId),
+      future: ApiService().channelListByTopicId(channelId),
       builder: (context, snapshot) {
         if (query.isEmpty) {
           return SizedBox(

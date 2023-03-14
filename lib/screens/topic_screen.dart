@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tutopedia/components/channel_view.dart';
 import 'package:tutopedia/constants/styling.dart';
-import 'package:tutopedia/models/topic_model.dart';
-import 'package:tutopedia/screens/search_channel_screen.dart';
+import 'package:tutopedia/models/sub_category_model.dart';
+import 'package:tutopedia/screens/channel_list_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
-class ChannelListScreen extends StatelessWidget {
-  final TopicModel topic;
-  const ChannelListScreen({super.key, required this.topic});
+class TopicScreen extends StatelessWidget {
+  final SubCategoryModel subCategory;
+  const TopicScreen({super.key, required this.subCategory});
 
   @override
   Widget build(BuildContext context) {
@@ -26,38 +25,36 @@ class ChannelListScreen extends StatelessWidget {
           splashRadius: 25.0,
         ),
         title: Text(
-          topic.title,
+          subCategory.title,
           style: TextStyle(
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           ),
         ),
         centerTitle: true,
         elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: SearchChannelScreen(topic.id),
-              );
-            },
-            icon: const Icon(
-              Icons.search_rounded,
-              color: Colors.black,
-            ),
-            splashRadius: 25.0,
-          ),
-        ],
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: ApiService().channelListByTopicId(topic.id),
+          future: ApiService().topicList(subCategory.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data!.isNotEmpty) {
-                return ChannelView(
-                  channelList: snapshot.data!,
-                  shrinkWrap: false,
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(snapshot.data![index].title),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ChannelListScreen(
+                              topic: snapshot.data![index],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                 );
               } else {
                 return SizedBox(
@@ -71,7 +68,7 @@ class ChannelListScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
-                        "Sorry, no course found",
+                        "Sorry, no topic found",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 20.0,

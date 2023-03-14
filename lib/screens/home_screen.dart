@@ -8,13 +8,11 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tutopedia/components/main_categories.dart';
 import 'package:tutopedia/components/header.dart';
-import 'package:tutopedia/components/main_courses.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/mycourse_list.dart';
 import 'package:tutopedia/components/theme_changer.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/change_password_screen.dart';
-import 'package:tutopedia/screens/search_course_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -456,7 +454,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showSearch(context: context, delegate: SearchCourseScreen());
+                      // showSearch(context: context, delegate: SearchChannelScreen());
                     },
                     child: Container(
                       margin: const EdgeInsets.all(15.0),
@@ -495,7 +493,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Header(title: 'Categories'),
                             MainCategories(),
                             Header(title: 'Main Courses'),
-                            MainCourses(),
                           ],
                         )
                       : ValueListenableBuilder(

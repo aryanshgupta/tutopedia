@@ -24,7 +24,7 @@ class MainCategories extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => SubCategoryScreen(category: item),
+                          builder: (context) => SubCategoryScreen(mainCategory: item),
                         ),
                       );
                     },
