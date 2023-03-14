@@ -44,7 +44,12 @@ class _TrendingTopicsState extends State<TrendingTopics> {
                           color: primaryColor.shade200,
                         ),
                       ),
-                      label: Text(item.title),
+                      label: Text(
+                        item.title,
+                        style: const TextStyle(
+                          color: Colors.black54,
+                        ),
+                      ),
                     ),
                   );
                 }).toList(),

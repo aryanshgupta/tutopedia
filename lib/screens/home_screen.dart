@@ -144,7 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 icon: const Icon(Icons.edit_rounded),
                                 style: ButtonStyle(
                                   foregroundColor: MaterialStateProperty.all(primaryColor),
-                                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                                  backgroundColor: MaterialStateProperty.all(
+                                    Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade300 : Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -552,10 +554,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: SizedBox(
                                     child: Text(
                                       "Your enrolled courses ${courseList.isEmpty ? "" : "(${courseList.length})"}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                                       ),
                                     ),
                                   ),
