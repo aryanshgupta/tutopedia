@@ -327,14 +327,62 @@ class _CourseScreenState extends State<CourseScreen> {
                                     ),
                                   ),
                                   const SizedBox(height: 10.0),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                                    child: Text(
-                                      "Lectures",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                    child: Row(
+                                      children: [
+                                        const Expanded(
+                                          child: Text(
+                                            "Lectures",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            if (snapshot.data!.length > 1) {
+                                              if (currentLectureIndex > 0) {
+                                                currentLectureIndex = snapshot.data!.indexOf(snapshot.data![currentLectureIndex]) - 1;
+                                              }
+                                              if (currentLectureIndex != 0) {
+                                                setState(() {
+                                                  ytPlayerController.pause();
+
+                                                  ytPlayerController.load(snapshot.data![currentLectureIndex].link.substring(30, 41));
+                                                });
+                                              }
+                                            }
+                                          },
+                                          icon: const Icon(
+                                            Icons.arrow_back_ios_new_rounded,
+                                            size: 20.0,
+                                          ),
+                                          splashRadius: 15.0,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            if (snapshot.data!.length > 1) {
+                                              if (currentLectureIndex < snapshot.data!.length - 1) {
+                                                currentLectureIndex = snapshot.data!.indexOf(snapshot.data![currentLectureIndex]) + 1;
+                                              }
+                                              if (currentLectureIndex != snapshot.data!.length - 1) {
+                                                setState(() {
+                                                  ytPlayerController.pause();
+
+                                                  ytPlayerController.load(snapshot.data![currentLectureIndex].link.substring(30, 41));
+                                                });
+                                              }
+                                            }
+                                          },
+                                          icon: const Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            size: 20.0,
+                                          ),
+                                          splashRadius: 15.0,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   ...snapshot.data!.map((item) {
