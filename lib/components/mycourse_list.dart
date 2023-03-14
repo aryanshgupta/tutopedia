@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:tutopedia/components/channel_view.dart';
+import 'package:tutopedia/components/course_view.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -61,8 +61,8 @@ class _MyCourseListState extends State<MyCourseList> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.isNotEmpty) {
-                      return ChannelView(
-                        channelList: snapshot.data!,
+                      return CourseView(
+                        courseList: snapshot.data!,
                         shrinkWrap: true,
                       );
                     } else {
@@ -78,7 +78,7 @@ class _MyCourseListState extends State<MyCourseList> {
                             ),
                             const SizedBox(height: 20.0),
                             const Text(
-                              "Sorry, no saved courses found",
+                              "You have not enrolled in any course",
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 20.0,

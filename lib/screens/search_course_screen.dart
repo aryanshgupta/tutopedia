@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
-import 'package:tutopedia/components/channel_view.dart';
+import 'package:tutopedia/components/course_view.dart';
 import 'package:tutopedia/constants/styling.dart';
-import 'package:tutopedia/models/channel_model.dart';
-import 'package:tutopedia/screens/lecture_screen.dart';
+import 'package:tutopedia/models/course_model.dart';
+import 'package:tutopedia/screens/course_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
-class SearchChannelScreen extends SearchDelegate {
-  String channelId = '';
+class SearchCourseScreen extends SearchDelegate {
+  String courseId = '';
 
-  SearchChannelScreen(this.channelId);
+  SearchCourseScreen(this.courseId);
 
   @override
-  String? get searchFieldLabel => "Search Channels";
+  String? get searchFieldLabel => "Search Courses";
 
   @override
   TextStyle? get searchFieldStyle => const TextStyle(
@@ -62,7 +62,7 @@ class SearchChannelScreen extends SearchDelegate {
             ),
             const SizedBox(height: 20.0),
             const Text(
-              "Sorry, no channel found",
+              "Sorry, no course found",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 20.0,
@@ -74,18 +74,18 @@ class SearchChannelScreen extends SearchDelegate {
       );
     } else {
       return FutureBuilder(
-        future: ApiService().channelListByTopicId(channelId),
+        future: ApiService().coursesByTopicId(courseId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
-              List<ChannelModel> searchResult = snapshot.data!
+              List<CourseModel> searchResult = snapshot.data!
                   .where(
                     (element) => element.title.toLowerCase().contains(query.toLowerCase()),
                   )
                   .toList();
               if (searchResult.isNotEmpty) {
-                return ChannelView(
-                  channelList: searchResult,
+                return CourseView(
+                  courseList: searchResult,
                   shrinkWrap: false,
                 );
               } else {
@@ -100,7 +100,7 @@ class SearchChannelScreen extends SearchDelegate {
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
-                        "Sorry, no channel found",
+                        "Sorry, no course found",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 20.0,
@@ -123,7 +123,7 @@ class SearchChannelScreen extends SearchDelegate {
                     ),
                     const SizedBox(height: 20.0),
                     const Text(
-                      "Sorry, no channel found",
+                      "Sorry, no course found",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 20.0,
@@ -170,7 +170,7 @@ class SearchChannelScreen extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
-      future: ApiService().channelListByTopicId(channelId),
+      future: ApiService().coursesByTopicId(courseId),
       builder: (context, snapshot) {
         if (query.isEmpty) {
           return SizedBox(
@@ -184,7 +184,7 @@ class SearchChannelScreen extends SearchDelegate {
                 ),
                 const SizedBox(height: 20.0),
                 const Text(
-                  "Type to search channels",
+                  "Type to search courses",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 20.0,
@@ -197,7 +197,7 @@ class SearchChannelScreen extends SearchDelegate {
         }
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
-            List<ChannelModel> searchResult = snapshot.data!
+            List<CourseModel> searchResult = snapshot.data!
                 .where(
                   (element) => element.title.toLowerCase().contains(query.toLowerCase()),
                 )
@@ -218,8 +218,8 @@ class SearchChannelScreen extends SearchDelegate {
                       } else {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => LectureScreen(
-                              channel: snapshot.data![index],
+                            builder: (context) => CourseScreen(
+                              course: snapshot.data![index],
                             ),
                           ),
                         );
@@ -244,7 +244,7 @@ class SearchChannelScreen extends SearchDelegate {
                     ),
                     const SizedBox(height: 20.0),
                     const Text(
-                      "Sorry, no channel found",
+                      "Sorry, no course found",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 20.0,
@@ -267,7 +267,7 @@ class SearchChannelScreen extends SearchDelegate {
                   ),
                   const SizedBox(height: 20.0),
                   const Text(
-                    "Sorry, no channel found",
+                    "Sorry, no course found",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 20.0,

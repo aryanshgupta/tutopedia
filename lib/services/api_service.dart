@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tutopedia/constants/api_url.dart';
 import 'package:tutopedia/models/topic_model.dart';
-import 'package:tutopedia/models/channel_model.dart';
+import 'package:tutopedia/models/course_model.dart';
 import 'package:tutopedia/models/lecture_model.dart';
 import 'package:tutopedia/models/main_category_model.dart';
 import 'package:tutopedia/models/sub_category_model.dart';
@@ -215,10 +215,10 @@ class ApiService {
     }
   }
 
-  Future<List<ChannelModel>> channelListByTopicId(String id) async {
+  Future<List<CourseModel>> coursesByTopicId(String id) async {
     var response = await http.get(
       Uri.parse(
-        "${ApiUrl.channelListByTopicIdApi.toString()}/$id",
+        "${ApiUrl.coursesByTopicIdApi.toString()}/$id",
       ),
       headers: {
         'Content-Type': 'application/json',
@@ -226,18 +226,18 @@ class ApiService {
       },
     );
 
-    List<ChannelModel> channelList = [];
+    List<CourseModel> courseList = [];
 
     try {
       List body = json.decode(response.body);
 
-      for (var channel in body) {
-        channelList.add(ChannelModel.fromJson(channel));
+      for (var course in body) {
+        courseList.add(CourseModel.fromJson(course));
       }
 
-      return channelList;
+      return courseList;
     } catch (e) {
-      return channelList;
+      return courseList;
     }
   }
 
@@ -261,8 +261,8 @@ class ApiService {
     try {
       List body = json.decode(response.body);
 
-      for (var channel in body) {
-        lectureList.add(LectureModel.fromJson(channel));
+      for (var lecture in body) {
+        lectureList.add(LectureModel.fromJson(lecture));
       }
 
       return lectureList;
@@ -271,7 +271,7 @@ class ApiService {
     }
   }
 
-  Future<List<ChannelModel>> myCourses(String token) async {
+  Future<List<CourseModel>> myCourses(String token) async {
     var response = await http.get(
       ApiUrl.myCoursesApi,
       headers: {
@@ -281,18 +281,18 @@ class ApiService {
       },
     );
 
-    List<ChannelModel> channelList = [];
+    List<CourseModel> mycourseList = [];
 
     try {
       List body = json.decode(response.body);
 
-      for (var category in body) {
-        channelList.add(ChannelModel.fromJson(category));
+      for (var mycourse in body) {
+        mycourseList.add(CourseModel.fromJson(mycourse));
       }
 
-      return channelList;
+      return mycourseList;
     } catch (e) {
-      return channelList;
+      return mycourseList;
     }
   }
 
@@ -342,7 +342,7 @@ class ApiService {
 
   Future<dynamic> rateCourse({
     required double rating,
-    required String channelId,
+    required String courseId,
     required String token,
   }) async {
     try {
@@ -355,7 +355,7 @@ class ApiService {
         },
         body: jsonEncode({
           "star_rated": rating,
-          "channel_id": channelId,
+          "channel_id": courseId,
         }),
       );
 

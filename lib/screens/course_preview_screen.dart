@@ -4,19 +4,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/constants/styling.dart';
-import 'package:tutopedia/models/channel_model.dart';
-import 'package:tutopedia/screens/lecture_screen.dart';
+import 'package:tutopedia/models/course_model.dart';
+import 'package:tutopedia/screens/course_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
-class LecturePreviewScreen extends StatefulWidget {
-  final ChannelModel channel;
-  const LecturePreviewScreen({super.key, required this.channel});
+class CoursePreviewScreen extends StatefulWidget {
+  final CourseModel course;
+  const CoursePreviewScreen({super.key, required this.course});
 
   @override
-  State<LecturePreviewScreen> createState() => _LecturePreviewScreenState();
+  State<CoursePreviewScreen> createState() => _CoursePreviewScreenState();
 }
 
-class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
+class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
   bool isLoading = false;
 
   bool isEnrolled = false;
@@ -50,7 +50,7 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
           body: SafeArea(
             child: FutureBuilder(
               future: ApiService().lectureList(
-                id: widget.channel.id,
+                id: widget.course.id,
                 token: authInfoBox.get("authToken"),
               ),
               builder: (context, snapshot) {
@@ -59,14 +59,14 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
                     return ListView(
                       children: [
                         Image.network(
-                          "https://i.ytimg.com/vi/${widget.channel.link.substring(30, 41)}/maxresdefault.jpg",
+                          "https://i.ytimg.com/vi/${widget.course.link.substring(30, 41)}/maxresdefault.jpg",
                           fit: BoxFit.cover,
                         ),
                         const SizedBox(height: 10.0),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Text(
-                            widget.channel.title,
+                            widget.course.title,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
@@ -77,7 +77,7 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: Text(
-                            widget.channel.channelName,
+                            widget.course.channelName,
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
@@ -99,7 +99,7 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
                           ),
                           const SizedBox(height: 20.0),
                           const Text(
-                            "Sorry, no lecture found",
+                            "Sorry, no course found",
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 20.0,
@@ -159,7 +159,7 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
 
                     ApiService()
                         .addCourse(
-                      id: widget.channel.id,
+                      id: widget.course.id,
                       token: authInfoBox.get("authToken"),
                     )
                         .then((value) {
@@ -168,14 +168,14 @@ class _LecturePreviewScreenState extends State<LecturePreviewScreen> {
                       });
                       Navigator.pop(context);
                       if (value["success"] == "Course Add Successfully To My Course" || value["error"] == "Already Add To My Course") {
-                        courseList[widget.channel.id] = 0.0;
+                        courseList[widget.course.id] = 0.0;
 
                         myCoursesBox.put("courseList", courseList);
 
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => LectureScreen(
-                              channel: widget.channel,
+                            builder: (context) => CourseScreen(
+                              course: widget.course,
                             ),
                           ),
                         );

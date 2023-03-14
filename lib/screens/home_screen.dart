@@ -506,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
                                   child: SizedBox(
                                     child: Text(
-                                      "Your saved channels ${courseList.isEmpty ? "" : "(${courseList.length})"}",
+                                      "Your enrolled courses ${courseList.isEmpty ? "" : "(${courseList.length})"}",
                                       style: const TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.bold,

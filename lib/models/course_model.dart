@@ -1,4 +1,4 @@
-class ChannelModel {
+class CourseModel {
   final String id;
   final String title;
   final String channelName;
@@ -8,7 +8,7 @@ class ChannelModel {
   final String rating;
   final String studentEnrolled;
 
-  ChannelModel({
+  CourseModel({
     required this.id,
     required this.title,
     required this.channelName,
@@ -19,8 +19,8 @@ class ChannelModel {
     required this.studentEnrolled,
   });
 
-  factory ChannelModel.fromJson(Map<String, dynamic> json) {
-    return ChannelModel(
+  factory CourseModel.fromJson(Map<String, dynamic> json) {
+    return CourseModel(
       id: json['id'] ?? "",
       title: json['title'] ?? "",
       channelName: json['channel_name'] ?? "",

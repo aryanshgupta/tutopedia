@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tutopedia/components/channel_view.dart';
+import 'package:tutopedia/components/course_view.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/topic_model.dart';
-import 'package:tutopedia/screens/search_channel_screen.dart';
+import 'package:tutopedia/screens/search_course_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
-class ChannelListScreen extends StatelessWidget {
+class CourseListScreen extends StatelessWidget {
   final TopicModel topic;
-  const ChannelListScreen({super.key, required this.topic});
+  const CourseListScreen({super.key, required this.topic});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class ChannelListScreen extends StatelessWidget {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SearchChannelScreen(topic.id),
+                delegate: SearchCourseScreen(topic.id),
               );
             },
             icon: const Icon(
@@ -51,12 +51,12 @@ class ChannelListScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: ApiService().channelListByTopicId(topic.id),
+          future: ApiService().coursesByTopicId(topic.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data!.isNotEmpty) {
-                return ChannelView(
-                  channelList: snapshot.data!,
+                return CourseView(
+                  courseList: snapshot.data!,
                   shrinkWrap: false,
                 );
               } else {

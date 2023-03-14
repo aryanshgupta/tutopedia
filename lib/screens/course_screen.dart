@@ -6,20 +6,20 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/constants/styling.dart';
-import 'package:tutopedia/models/channel_model.dart';
-import 'package:tutopedia/screens/lecture_preview_screen.dart';
+import 'package:tutopedia/models/course_model.dart';
+import 'package:tutopedia/screens/course_preview_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class LectureScreen extends StatefulWidget {
-  final ChannelModel channel;
-  const LectureScreen({super.key, required this.channel});
+class CourseScreen extends StatefulWidget {
+  final CourseModel course;
+  const CourseScreen({super.key, required this.course});
 
   @override
-  State<LectureScreen> createState() => _LectureScreenState();
+  State<CourseScreen> createState() => _CourseScreenState();
 }
 
-class _LectureScreenState extends State<LectureScreen> {
+class _CourseScreenState extends State<CourseScreen> {
   var myCoursesBox = Hive.box('my_courses');
 
   double rating = 0.0;
@@ -35,14 +35,14 @@ class _LectureScreenState extends State<LectureScreen> {
   @override
   void initState() {
     ytPlayerController = YoutubePlayerController(
-      initialVideoId: widget.channel.link.substring(30, 41),
+      initialVideoId: widget.course.link.substring(30, 41),
       flags: const YoutubePlayerFlags(
         autoPlay: false,
       ),
     );
     Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
     if (courseList.isNotEmpty) {
-      rating = courseList[widget.channel.id];
+      rating = courseList[widget.course.id];
     }
     super.initState();
   }
@@ -103,7 +103,7 @@ class _LectureScreenState extends State<LectureScreen> {
 
                         ApiService()
                             .deleteCourse(
-                          id: widget.channel.id,
+                          id: widget.course.id,
                           token: authInfoBox.get("authToken"),
                         )
                             .then((value) {
@@ -113,13 +113,13 @@ class _LectureScreenState extends State<LectureScreen> {
                           Navigator.pop(context);
 
                           if (value["success"] == "MyCourse Removed Successfully" || value["message"] == "Call to a member function delete() on null") {
-                            courseList.remove(widget.channel.id);
+                            courseList.remove(widget.course.id);
                             myCoursesBox.put("courseList", courseList);
 
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => LecturePreviewScreen(
-                                  channel: widget.channel,
+                                builder: (context) => CoursePreviewScreen(
+                                  course: widget.course,
                                 ),
                               ),
                             );
@@ -142,7 +142,7 @@ class _LectureScreenState extends State<LectureScreen> {
               body: SafeArea(
                 child: FutureBuilder(
                   future: ApiService().lectureList(
-                    id: widget.channel.id,
+                    id: widget.course.id,
                     token: authInfoBox.get("authToken"),
                   ),
                   builder: (context, snapshot) {
@@ -172,7 +172,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          widget.channel.channelName,
+                                          widget.course.channelName,
                                           style: TextStyle(
                                             fontSize: 16.0,
                                             color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
@@ -206,7 +206,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                               ApiService()
                                                   .rateCourse(
                                                 rating: rating,
-                                                channelId: widget.channel.id,
+                                                courseId: widget.course.id,
                                                 token: authInfoBox.get("authToken"),
                                               )
                                                   .then((value) {
@@ -217,7 +217,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                                 if (value["success"] == "rating updated successfully ") {
                                                   Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
 
-                                                  courseList[widget.channel.id] = rating;
+                                                  courseList[widget.course.id] = rating;
 
                                                   myCoursesBox.put("courseList", courseList);
 
@@ -441,7 +441,7 @@ class _LectureScreenState extends State<LectureScreen> {
                               ),
                               const SizedBox(height: 20.0),
                               const Text(
-                                "Sorry, no lecture found",
+                                "Sorry, no course found",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 20.0,

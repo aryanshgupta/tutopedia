@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
-import 'package:tutopedia/models/channel_model.dart';
-import 'package:tutopedia/screens/lecture_preview_screen.dart';
-import 'package:tutopedia/screens/lecture_screen.dart';
+import 'package:tutopedia/models/course_model.dart';
+import 'package:tutopedia/screens/course_preview_screen.dart';
+import 'package:tutopedia/screens/course_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 
-class ChannelView extends StatefulWidget {
-  final List<ChannelModel> channelList;
+class CourseView extends StatefulWidget {
+  final List<CourseModel> courseList;
   final bool shrinkWrap;
 
-  const ChannelView({
+  const CourseView({
     super.key,
-    required this.channelList,
+    required this.courseList,
     required this.shrinkWrap,
   });
 
   @override
-  State<ChannelView> createState() => _ChannelViewState();
+  State<CourseView> createState() => _CourseViewState();
 }
 
-class _ChannelViewState extends State<ChannelView> {
+class _CourseViewState extends State<CourseView> {
   bool isLoading = false;
 
   @override
@@ -28,7 +28,7 @@ class _ChannelViewState extends State<ChannelView> {
     return ListView.builder(
       shrinkWrap: widget.shrinkWrap,
       physics: widget.shrinkWrap ? const ScrollPhysics() : null,
-      itemCount: widget.channelList.length,
+      itemCount: widget.courseList.length,
       padding: const EdgeInsets.symmetric(
         horizontal: 15.0,
         vertical: 5.0,
@@ -51,21 +51,21 @@ class _ChannelViewState extends State<ChannelView> {
               Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
               bool isEnrolled = false;
               if (courseList.isNotEmpty) {
-                isEnrolled = courseList.containsKey(widget.channelList[index].id);
+                isEnrolled = courseList.containsKey(widget.courseList[index].id);
               }
               if (isEnrolled) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => LectureScreen(
-                      channel: widget.channelList[index],
+                    builder: (context) => CourseScreen(
+                      course: widget.courseList[index],
                     ),
                   ),
                 );
               } else {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => LecturePreviewScreen(
-                      channel: widget.channelList[index],
+                    builder: (context) => CoursePreviewScreen(
+                      course: widget.courseList[index],
                     ),
                   ),
                 );
@@ -81,7 +81,7 @@ class _ChannelViewState extends State<ChannelView> {
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                     child: Image.network(
-                      "https://i.ytimg.com/vi/${widget.channelList[index].link.substring(30, 41)}/maxresdefault.jpg",
+                      "https://i.ytimg.com/vi/${widget.courseList[index].link.substring(30, 41)}/maxresdefault.jpg",
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -93,7 +93,7 @@ class _ChannelViewState extends State<ChannelView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.channelList[index].title,
+                          widget.courseList[index].title,
                           style: const TextStyle(
                             fontSize: 15.0,
                           ),
@@ -101,7 +101,7 @@ class _ChannelViewState extends State<ChannelView> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          widget.channelList[index].channelName,
+                          widget.courseList[index].channelName,
                           style: TextStyle(
                             fontSize: 10.0,
                             color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
@@ -110,7 +110,7 @@ class _ChannelViewState extends State<ChannelView> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         RatingBarIndicator(
-                          rating: double.parse(widget.channelList[index].rating),
+                          rating: double.parse(widget.courseList[index].rating),
                           itemBuilder: (context, index) => const Icon(
                             Icons.star_rate_rounded,
                             color: Colors.amber,
@@ -128,9 +128,7 @@ class _ChannelViewState extends State<ChannelView> {
                             ),
                             const SizedBox(width: 5.0),
                             Text(
-                              int.parse(widget.channelList[index].studentEnrolled) >= 2
-                                  ? "${widget.channelList[index].studentEnrolled} students"
-                                  : "${widget.channelList[index].studentEnrolled} student",
+                              int.parse(widget.courseList[index].studentEnrolled) >= 2 ? "${widget.courseList[index].studentEnrolled} students" : "${widget.courseList[index].studentEnrolled} student",
                               style: TextStyle(
                                 fontSize: 10.0,
                                 color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,

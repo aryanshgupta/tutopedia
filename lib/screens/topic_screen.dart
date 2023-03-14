@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/sub_category_model.dart';
-import 'package:tutopedia/screens/channel_list_screen.dart';
+import 'package:tutopedia/screens/course_list_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class TopicScreen extends StatelessWidget {
@@ -47,7 +47,7 @@ class TopicScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => ChannelListScreen(
+                            builder: (context) => CourseListScreen(
                               topic: snapshot.data![index],
                             ),
                           ),
