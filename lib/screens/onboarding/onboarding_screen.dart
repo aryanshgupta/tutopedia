@@ -17,6 +17,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int currentPage = 0;
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
