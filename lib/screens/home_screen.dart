@@ -14,6 +14,7 @@ import 'package:tutopedia/components/new_courses.dart';
 import 'package:tutopedia/components/theme_changer.dart';
 import 'package:tutopedia/components/top_rated_courses.dart';
 import 'package:tutopedia/components/trending_topics.dart';
+import 'package:tutopedia/constants/app_info.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/change_password_screen.dart';
 import 'package:tutopedia/screens/search_course_screen.dart';
@@ -242,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 ListTile(
                   onTap: () {
-                    Share.share('Check out Tutopedia, a learning app for students');
+                    Share.share('Check out Tutopedia, a learning app for students.\n Download now: $appLink');
                   },
                   leading: Icon(
                     Icons.share,
