@@ -546,7 +546,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             items: [
               SalomonBottomBarItem(
-                icon: const Icon(Icons.category_outlined),
+                icon: const Icon(Icons.home_outlined),
                 activeIcon: const Icon(Icons.home_rounded),
                 title: const Text("Home"),
               ),
