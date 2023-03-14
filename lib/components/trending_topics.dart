@@ -52,7 +52,7 @@ class _TrendingTopicsState extends State<TrendingTopics> {
             );
           } else {
             return SizedBox(
-              height: 150.0,
+              height: 55.0,
               width: MediaQuery.of(context).size.width,
               child: const Tooltip(
                 message: "Sorry, no courses found.",
@@ -65,7 +65,7 @@ class _TrendingTopicsState extends State<TrendingTopics> {
           }
         } else if (snapshot.hasError) {
           return SizedBox(
-            height: 150.0,
+            height: 55.0,
             width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +85,7 @@ class _TrendingTopicsState extends State<TrendingTopics> {
           );
         } else {
           return SizedBox(
-            height: 150.0,
+            height: 55.0,
             width: MediaQuery.of(context).size.width,
             child: const SpinKitThreeInOut(
               color: primaryColor,
