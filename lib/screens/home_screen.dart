@@ -16,6 +16,7 @@ import 'package:tutopedia/components/top_rated_courses.dart';
 import 'package:tutopedia/components/trending_topics.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/change_password_screen.dart';
+import 'package:tutopedia/screens/search_course_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -493,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // showSearch(context: context, delegate: SearchChannelScreen());
+                      showSearch(context: context, delegate: SearchCourseScreen());
                     },
                     child: Container(
                       margin: const EdgeInsets.all(15.0),

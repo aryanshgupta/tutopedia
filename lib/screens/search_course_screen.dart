@@ -12,8 +12,6 @@ import 'package:tutopedia/services/api_service.dart';
 class SearchCourseScreen extends SearchDelegate {
   String courseId = '';
 
-  SearchCourseScreen(this.courseId);
-
   @override
   String? get searchFieldLabel => "Search Courses";
 
@@ -50,7 +48,7 @@ class SearchCourseScreen extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    if (query.isEmpty) {
+    if (query.trim().isEmpty) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -74,13 +72,13 @@ class SearchCourseScreen extends SearchDelegate {
       );
     } else {
       return FutureBuilder(
-        future: ApiService().coursesByTopicId(courseId),
+        future: ApiService().newCourseList(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
               List<CourseModel> searchResult = snapshot.data!
                   .where(
-                    (element) => element.title.toLowerCase().contains(query.toLowerCase()),
+                    (element) => element.title.toLowerCase().contains(query.trim().toLowerCase()),
                   )
                   .toList();
               if (searchResult.isNotEmpty) {
@@ -170,9 +168,9 @@ class SearchCourseScreen extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
-      future: ApiService().coursesByTopicId(courseId),
+      future: ApiService().newCourseList(),
       builder: (context, snapshot) {
-        if (query.isEmpty) {
+        if (query.trim().isEmpty) {
           return SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Column(
@@ -199,7 +197,7 @@ class SearchCourseScreen extends SearchDelegate {
           if (snapshot.data!.isNotEmpty) {
             List<CourseModel> searchResult = snapshot.data!
                 .where(
-                  (element) => element.title.toLowerCase().contains(query.toLowerCase()),
+                  (element) => element.title.toLowerCase().contains(query.trim().toLowerCase()),
                 )
                 .toList();
             if (searchResult.isNotEmpty) {

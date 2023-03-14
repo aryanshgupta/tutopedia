@@ -38,7 +38,7 @@ class CourseListScreen extends StatelessWidget {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SearchCourseScreen(topic.id),
+                delegate: SearchCourseScreen(),
               );
             },
             icon: const Icon(
