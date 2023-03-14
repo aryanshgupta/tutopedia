@@ -11,6 +11,7 @@ import 'package:tutopedia/components/header.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/mycourse_list.dart';
 import 'package:tutopedia/components/new_courses.dart';
+import 'package:tutopedia/components/popular_courses.dart';
 import 'package:tutopedia/components/theme_changer.dart';
 import 'package:tutopedia/components/top_rated_courses.dart';
 import 'package:tutopedia/components/trending_topics.dart';
@@ -549,6 +550,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             TrendingTopics(),
                             Header(title: 'New Courses'),
                             NewCourses(),
+                            Header(title: 'Most Popular Courses'),
+                            PopularCourses(),
                           ],
                         )
                       : ValueListenableBuilder(

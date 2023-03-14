@@ -63,6 +63,10 @@ class ApiUrl {
     "${baseUrl.toString()}/tutoapi/api/newChannel",
   );
 
+  static Uri popularCoursesApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/mostpopular",
+  );
+
   static Uri myCoursesApi = Uri.parse(
     "${baseUrl.toString()}/tutoapi/api/my/course",
   );

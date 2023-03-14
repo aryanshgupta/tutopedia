@@ -340,6 +340,30 @@ class ApiService {
     }
   }
 
+  Future<List<CourseModel>> popularCourseList() async {
+    var response = await http.get(
+      ApiUrl.popularCoursesApi,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+
+    List<CourseModel> popularcourseList = [];
+
+    try {
+      List body = json.decode(response.body);
+
+      for (var course in body) {
+        popularcourseList.add(CourseModel.fromJson(course));
+      }
+
+      return popularcourseList;
+    } catch (e) {
+      return popularcourseList;
+    }
+  }
+
   Future<List<CourseModel>> myCourses(String token) async {
     var response = await http.get(
       ApiUrl.myCoursesApi,
