@@ -5,8 +5,8 @@ import 'package:hive/hive.dart';
 import 'package:tutopedia/components/course_view.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/course_model.dart';
+import 'package:tutopedia/screens/course_preview_screen.dart';
 import 'package:tutopedia/screens/course_screen.dart';
-import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class SearchCourseScreen extends SearchDelegate {
@@ -208,17 +208,24 @@ class SearchCourseScreen extends SearchDelegate {
                   return ListTile(
                     title: Text(searchResult[index].title),
                     onTap: () {
-                      var authInfoBox = Hive.box('auth_info');
-                      if (authInfoBox.get("authToken").isEmpty) {
+                      var myCoursesBox = Hive.box('my_courses');
+                      Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+                      bool isEnrolled = false;
+                      if (courseList.isNotEmpty) {
+                        isEnrolled = courseList.containsKey(snapshot.data![index].id);
+                      }
+                      if (isEnrolled) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const SigninScreen(),
+                            builder: (context) => CourseScreen(
+                              course: snapshot.data![index],
+                            ),
                           ),
                         );
                       } else {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => CourseScreen(
+                            builder: (context) => CoursePreviewScreen(
                               course: snapshot.data![index],
                             ),
                           ),

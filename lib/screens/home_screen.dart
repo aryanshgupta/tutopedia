@@ -270,6 +270,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 authInfoBox.put('profilePhoto', "");
                                 authInfoBox.put('authToken', "");
 
+                                var myCoursesBox = Hive.box('my_courses');
+                                myCoursesBox.delete("courseList");
+
                                 Fluttertoast.showToast(
                                   msg: "Your are successfully sign out.",
                                   gravity: ToastGravity.BOTTOM,
