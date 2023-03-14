@@ -28,8 +28,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
-  int totalCourses = 0;
-
   bool isLoading = false;
 
   String appName = "Tutopedia";
@@ -502,7 +500,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             MainCourses(),
                           ],
                         )
-                      : const MyCourseList(),
+                      : ValueListenableBuilder(
+                          valueListenable: Hive.box('my_courses').listenable(),
+                          builder: (context, myCoursesBox, child) {
+                            Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
+                                  child: SizedBox(
+                                    child: Text(
+                                      "Your saved channels ${courseList.isEmpty ? "" : "(${courseList.length})"}",
+                                      style: const TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const MyCourseList(),
+                              ],
+                            );
+                          }),
                 ],
               ),
             ),
@@ -518,10 +539,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 } else {
-                  var myCoursesBox = Hive.box('my_courses');
                   setState(() {
                     currentIndex = i;
-                    totalCourses = myCoursesBox.get('courseList') != null ? myCoursesBox.get('courseList').length : 0;
                   });
                 }
               } else {
