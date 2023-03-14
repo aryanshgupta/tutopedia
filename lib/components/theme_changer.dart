@@ -52,16 +52,6 @@ class ThemeChange {
                   Navigator.pop(context);
                 },
               ),
-              RadioListTile(
-                activeColor: primaryColor,
-                title: const Text("Follow System"),
-                groupValue: themeMode,
-                value: AdaptiveThemeMode.system,
-                onChanged: (dynamic value) {
-                  AdaptiveTheme.of(context).setSystem();
-                  Navigator.pop(context);
-                },
-              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
                 child: Row(
