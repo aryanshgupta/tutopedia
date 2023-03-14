@@ -273,7 +273,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 authInfoBox.put('profilePhoto', "");
                                 authInfoBox.put('authToken', "");
 
-                                Navigator.pop(context);
                                 Fluttertoast.showToast(
                                   msg: "Your are successfully sign out.",
                                   gravity: ToastGravity.BOTTOM,
