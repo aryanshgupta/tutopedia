@@ -10,7 +10,10 @@ import 'package:tutopedia/components/main_categories.dart';
 import 'package:tutopedia/components/header.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
 import 'package:tutopedia/components/mycourse_list.dart';
+import 'package:tutopedia/components/new_courses.dart';
 import 'package:tutopedia/components/theme_changer.dart';
+import 'package:tutopedia/components/top_rated_courses.dart';
+import 'package:tutopedia/components/trending_topics.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/change_password_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
@@ -495,7 +498,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: const [
                             Header(title: 'Categories'),
                             MainCategories(),
-                            Header(title: 'Main Courses'),
+                            Header(title: 'Top Rated Courses'),
+                            TopRatedCourses(),
+                            Header(title: 'Trending topics'),
+                            TrendingTopics(),
+                            Header(title: 'New Courses'),
+                            NewCourses(),
                           ],
                         )
                       : ValueListenableBuilder(

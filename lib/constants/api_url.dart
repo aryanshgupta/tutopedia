@@ -51,6 +51,18 @@ class ApiUrl {
     "${baseUrl.toString()}/tutoapi/api/lectures",
   );
 
+  static Uri topRatedCoursesApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/toprated",
+  );
+
+  static Uri trendingTopicsApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/trends",
+  );
+
+  static Uri newCoursesApi = Uri.parse(
+    "${baseUrl.toString()}/tutoapi/api/newChannel",
+  );
+
   static Uri myCoursesApi = Uri.parse(
     "${baseUrl.toString()}/tutoapi/api/my/course",
   );

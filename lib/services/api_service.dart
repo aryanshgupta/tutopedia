@@ -271,6 +271,75 @@ class ApiService {
     }
   }
 
+  Future<List<CourseModel>> topRatedCourseList() async {
+    var response = await http.get(
+      ApiUrl.topRatedCoursesApi,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+
+    List<CourseModel> topRatedcourseList = [];
+
+    try {
+      List body = json.decode(response.body);
+
+      for (var course in body) {
+        topRatedcourseList.add(CourseModel.fromJson(course));
+      }
+
+      return topRatedcourseList;
+    } catch (e) {
+      return topRatedcourseList;
+    }
+  }
+
+  Future<List<TopicModel>> trendingTopics() async {
+    var response = await http.get(
+      ApiUrl.trendingTopicsApi,
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    );
+
+    List<TopicModel> trendingtopicList = [];
+
+    try {
+      List body = json.decode(response.body);
+
+      for (var topic in body) {
+        trendingtopicList.add(TopicModel.fromJson(topic));
+      }
+
+      return trendingtopicList;
+    } catch (e) {
+      return trendingtopicList;
+    }
+  }
+
+  Future<List<CourseModel>> newCourseList() async {
+    var response = await http.get(
+      ApiUrl.newCoursesApi,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+
+    List<CourseModel> newcourseList = [];
+
+    try {
+      List body = json.decode(response.body);
+
+      for (var course in body) {
+        newcourseList.add(CourseModel.fromJson(course));
+      }
+
+      return newcourseList;
+    } catch (e) {
+      return newcourseList;
+    }
+  }
+
   Future<List<CourseModel>> myCourses(String token) async {
     var response = await http.get(
       ApiUrl.myCoursesApi,
