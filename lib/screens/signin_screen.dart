@@ -154,26 +154,66 @@ class _SigninScreenState extends State<SigninScreen> {
                           password: passwordController.text.trim(),
                         )
                             .then((value) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          Navigator.pop(context);
                           if (value["success"] == true) {
-                            var authInfoBox = Hive.box('auth_info');
-                            authInfoBox.put('name', value["data"]["name"] ?? "");
-                            authInfoBox.put('email', value["data"]["email"] ?? "");
-                            authInfoBox.put('profilePhoto', value["data"]["profile_image"] ?? "");
-                            authInfoBox.put('authToken', value["data"]["token"] ?? "");
+                            ApiService().myCourses(value["data"]["token"]).then((myCourseList) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.pop(context);
 
-                            Navigator.of(context).pop();
-                            Fluttertoast.showToast(
-                              msg: "Your are successfully sign in.",
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: primaryColor.shade500,
-                              textColor: Colors.white,
-                              fontSize: 16.0,
-                            );
+                              var myCoursesBox = Hive.box('my_courses');
+                              Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+
+                              for (var item in myCourseList) {
+                                courseList[item.id] = 0.0;
+                              }
+
+                              myCoursesBox.put("courseList", courseList);
+
+                              var authInfoBox = Hive.box('auth_info');
+                              authInfoBox.put('name', value["data"]["name"] ?? "");
+                              authInfoBox.put('email', value["data"]["email"] ?? "");
+                              authInfoBox.put('profilePhoto', value["data"]["profile_image"] ?? "");
+                              authInfoBox.put('authToken', value["data"]["token"] ?? "");
+
+                              Navigator.of(context).pop();
+                              Fluttertoast.showToast(
+                                msg: "Your are successfully sign in.",
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: primaryColor.shade500,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                              );
+                            }).onError((error, stackTrace) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text("Something went wrong"),
+                                  content: const Text("Unable to sign in, please try again."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Okay"),
+                                    )
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                  actionsPadding: const EdgeInsets.only(bottom: 12.0, right: 15.0),
+                                ),
+                              );
+                            });
                           } else {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.pop(context);
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
