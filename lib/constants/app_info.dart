@@ -1,1 +1,1 @@
-const appLink = "https://i.diawi.com/ehYoYv";
+const appLink = "https://bit.ly/m/tutopedia";

@@ -168,7 +168,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             }
                           },
-                          child: const Text("Signin"),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(primaryColor),
+                          ),
+                          child: const Text(
+                            "Signin",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       )
                     : const SizedBox(),
@@ -243,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 ListTile(
                   onTap: () {
-                    Share.share('Check out Tutopedia, a learning app for students.\n Download now: $appLink');
+                    Share.share('Check out Tutopedia, a learning app for students.\nDownload now: $appLink');
                   },
                   leading: Icon(
                     Icons.share,
@@ -388,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   ),
                   title: const Text(
-                    "About",
+                    "About Us",
                     style: TextStyle(
                       fontSize: 15.0,
                     ),
