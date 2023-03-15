@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tutopedia/components/course_slide_view.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -17,41 +18,35 @@ class _NewCoursesState extends State<NewCourses> {
     return FutureBuilder(
       future: ApiService().newCourseList(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data!.isNotEmpty) {
-            return CourseSlideView(snapshot.data!);
-          } else {
-            return SizedBox(
-              height: 127.0,
-              width: MediaQuery.of(context).size.width,
-              child: const Tooltip(
-                message: "Sorry, no courses found.",
-                child: Icon(
-                  Icons.error_outline_rounded,
-                  size: 50.0,
-                ),
-              ),
-            );
-          }
-        } else if (snapshot.hasError) {
-          return SizedBox(
-            height: 127.0,
-            width: MediaQuery.of(context).size.width,
-            child: const Tooltip(
-              message: "Sorry, something went wrong!",
-              child: Icon(
-                Icons.error_outline_rounded,
-                size: 50.0,
-              ),
-            ),
-          );
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          return CourseSlideView(snapshot.data!);
         } else {
-          return SizedBox(
-            height: 127.0,
-            width: MediaQuery.of(context).size.width,
-            child: const SpinKitThreeInOut(
-              color: primaryColor,
-              size: 50.0,
+          return Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.filled(5, 0).map((item) {
+                  return Container(
+                    margin: const EdgeInsets.all(7.5),
+                    width: 200.0,
+                    height: 112.5,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                      color: Colors.grey.shade100,
+                    ),
+                    child: Icon(
+                      Icons.image_rounded,
+                      color: Colors.grey.shade800,
+                      size: 35.0,
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           );
         }
