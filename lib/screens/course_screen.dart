@@ -27,7 +27,7 @@ class CourseScreen extends StatefulWidget {
 class _CourseScreenState extends State<CourseScreen> {
   int currentLectureIndex = 0;
 
-  bool isLoading = true;
+  bool isLoading = false;
 
   late PodPlayerController ytPlayerController;
 
