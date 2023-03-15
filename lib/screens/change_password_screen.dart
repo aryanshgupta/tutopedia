@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -145,7 +145,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           isLoading = true;
                         });
                         LoadingDialog(context);
-                        var authInfoBox = Hive.box('auth_info');
                         ApiService()
                             .changePassword(
                           password: passwordController.text.trim(),

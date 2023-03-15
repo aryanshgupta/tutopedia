@@ -1,8 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hive/hive.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/forgot_password_screen.dart';
 import 'package:tutopedia/screens/signup_screen.dart';
@@ -161,7 +161,6 @@ class _SigninScreenState extends State<SigninScreen> {
                               });
                               Navigator.pop(context);
 
-                              var myCoursesBox = Hive.box('my_courses');
                               Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
 
                               for (var item in myCourseList) {
@@ -170,7 +169,6 @@ class _SigninScreenState extends State<SigninScreen> {
 
                               myCoursesBox.put("courseList", courseList);
 
-                              var authInfoBox = Hive.box('auth_info');
                               authInfoBox.put('name', value["data"]["name"] ?? "");
                               authInfoBox.put('email', value["data"]["email"] ?? "");
                               authInfoBox.put('profilePhoto', value["data"]["profile_image"] ?? "");

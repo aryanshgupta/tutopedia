@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tutopedia/components/course_view.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -18,7 +19,7 @@ class _MyCourseListState extends State<MyCourseList> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: Hive.box('auth_info').listenable(),
+      valueListenable: authInfoBox.listenable(),
       builder: (context, authInfoBox, child) {
         if (authInfoBox.get("authToken").isEmpty) {
           return SizedBox(
@@ -54,7 +55,7 @@ class _MyCourseListState extends State<MyCourseList> {
           );
         } else {
           return ValueListenableBuilder(
-            valueListenable: Hive.box('my_courses').listenable(),
+            valueListenable: myCoursesBox.listenable(),
             builder: (context, myCoursesBox, child) {
               return FutureBuilder(
                 future: ApiService().myCourses(authInfoBox.get("authToken")),

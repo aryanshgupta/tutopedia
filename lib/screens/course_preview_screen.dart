@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/course_model.dart';
 import 'package:tutopedia/screens/course_screen.dart';
@@ -16,8 +16,6 @@ class CoursePreviewScreen extends StatefulWidget {
 }
 
 class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
-  var authInfoBox = Hive.box('auth_info');
-
   bool isLoading = false;
 
   bool isEnrolled = false;
@@ -98,7 +96,6 @@ class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
                   });
                   LoadingDialog(context);
 
-                  var myCoursesBox = Hive.box('my_courses');
                   Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
 
                   ApiService()

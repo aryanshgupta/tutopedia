@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/course_model.dart';
 import 'package:tutopedia/screens/course_preview_screen.dart';
@@ -25,10 +25,6 @@ class CourseScreen extends StatefulWidget {
 }
 
 class _CourseScreenState extends State<CourseScreen> {
-  var authInfoBox = Hive.box('auth_info');
-
-  var myCoursesBox = Hive.box('my_courses');
-
   int currentLectureIndex = 0;
 
   bool isLoading = true;

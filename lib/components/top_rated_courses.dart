@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:hive/hive.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/course_preview_screen.dart';
 import 'package:tutopedia/screens/course_screen.dart';
@@ -31,7 +31,6 @@ class _TopRatedCoursesState extends State<TopRatedCourses> {
                       Radius.circular(10.0),
                     ),
                     onTap: () {
-                      var myCoursesBox = Hive.box('my_courses');
                       Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
                       bool isEnrolled = false;
                       if (courseList.isNotEmpty) {

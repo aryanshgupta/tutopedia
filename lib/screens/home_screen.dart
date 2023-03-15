@@ -16,6 +16,7 @@ import 'package:tutopedia/components/theme_changer.dart';
 import 'package:tutopedia/components/top_rated_courses.dart';
 import 'package:tutopedia/components/trending_topics.dart';
 import 'package:tutopedia/constants/app_info.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/change_password_screen.dart';
 import 'package:tutopedia/screens/search_course_screen.dart';
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: Hive.box('auth_info').listenable(),
+      valueListenable: authInfoBox.listenable(),
       builder: (context, authInfoBox, child) {
         return Scaffold(
           drawer: Drawer(
@@ -286,7 +287,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 authInfoBox.put('profilePhoto', "");
                                 authInfoBox.put('authToken', "");
 
-                                var myCoursesBox = Hive.box('my_courses');
                                 myCoursesBox.delete("courseList");
 
                                 Fluttertoast.showToast(
@@ -555,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         )
                       : ValueListenableBuilder(
-                          valueListenable: Hive.box('my_courses').listenable(),
+                          valueListenable: myCoursesBox.listenable(),
                           builder: (context, myCoursesBox, child) {
                             Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
                             return Column(

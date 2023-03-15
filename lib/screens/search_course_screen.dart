@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
 import 'package:tutopedia/components/course_view.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/course_model.dart';
 import 'package:tutopedia/screens/course_preview_screen.dart';
@@ -206,7 +206,6 @@ class SearchCourseScreen extends SearchDelegate {
                   return ListTile(
                     title: Text(searchResult[index].title),
                     onTap: () {
-                      var myCoursesBox = Hive.box('my_courses');
                       Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
                       bool isEnrolled = false;
                       if (courseList.isNotEmpty) {

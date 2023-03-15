@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_content.dart';
 import 'package:tutopedia/screens/onboarding/components/page_view_indicator.dart';
@@ -35,10 +35,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    var appLogBox = Hive.box('app_log');
                     appLogBox.put('visitStatus', true);
 
-                    var authInfoBox = Hive.box('auth_info');
                     authInfoBox.put('name', "");
                     authInfoBox.put('email', "");
                     authInfoBox.put('profilePhoto', "");
@@ -99,10 +97,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: TextButton(
                   onPressed: () {
                     if (currentPage == 2) {
-                      var appLogBox = Hive.box('app_log');
                       appLogBox.put('visitStatus', true);
 
-                      var authInfoBox = Hive.box('auth_info');
                       authInfoBox.put('name', "");
                       authInfoBox.put('email', "");
                       authInfoBox.put('profilePhoto', "");

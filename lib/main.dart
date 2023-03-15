@@ -4,6 +4,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/screens/home_screen.dart';
 import 'package:tutopedia/screens/onboarding/onboarding_screen.dart';
 import 'constants/styling.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           darkTheme: darkTheme,
           debugShowCheckedModeBanner: false,
           home: ValueListenableBuilder(
-            valueListenable: Hive.box('app_log').listenable(),
+            valueListenable: appLogBox.listenable(),
             builder: (context, appLogBox, child) {
               bool? visitStatus = appLogBox.get('visitStatus');
               if (visitStatus != null && visitStatus) {
