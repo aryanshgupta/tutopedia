@@ -167,7 +167,7 @@ class _EmailVerifyScreenState extends State<EmailVerifyScreen> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Something went wrong"),
+                              title: const Text("Got some error"),
                               content: const Text("Unable to proceed, please try again."),
                               actions: [
                                 TextButton(

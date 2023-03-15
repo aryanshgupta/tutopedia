@@ -235,7 +235,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Something went wrong"),
+                              title: const Text("Got some error"),
                               content: const Text("Unable to sign up, please try again."),
                               actions: [
                                 TextButton(

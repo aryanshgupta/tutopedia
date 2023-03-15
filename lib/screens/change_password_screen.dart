@@ -213,7 +213,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Something went wrong"),
+                              title: const Text("Got some error"),
                               content: const Text("Unable to change password, please try again."),
                               actions: [
                                 TextButton(
