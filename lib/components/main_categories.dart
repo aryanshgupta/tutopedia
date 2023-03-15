@@ -20,6 +20,9 @@ class MainCategories extends StatelessWidget {
               child: Row(
                 children: snapshot.data!.map((item) {
                   return InkWell(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15.0),
+                    ),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

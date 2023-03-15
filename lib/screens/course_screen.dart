@@ -440,7 +440,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                     );
                               },
                               borderRadius: const BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(50.0),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
