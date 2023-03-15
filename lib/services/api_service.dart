@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:tutopedia/constants/api_url.dart';
 import 'package:tutopedia/models/topic_model.dart';
 import 'package:tutopedia/models/course_model.dart';
-import 'package:tutopedia/models/lecture_model.dart';
 import 'package:tutopedia/models/main_category_model.dart';
 import 'package:tutopedia/models/sub_category_model.dart';
 
@@ -238,36 +237,6 @@ class ApiService {
       return courseList;
     } catch (e) {
       return courseList;
-    }
-  }
-
-  Future<List<LectureModel>> lectureList({
-    required String id,
-    required String token,
-  }) async {
-    var response = await http.get(
-      Uri.parse(
-        "${ApiUrl.lectureListApi.toString()}/$id",
-      ),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
-
-    List<LectureModel> lectureList = [];
-
-    try {
-      List body = json.decode(response.body);
-
-      for (var lecture in body) {
-        lectureList.add(LectureModel.fromJson(lecture));
-      }
-
-      return lectureList;
-    } catch (e) {
-      return lectureList;
     }
   }
 

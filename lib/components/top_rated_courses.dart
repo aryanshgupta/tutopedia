@@ -42,6 +42,7 @@ class _TopRatedCoursesState extends State<TopRatedCourses> {
                           MaterialPageRoute(
                             builder: (context) => CourseScreen(
                               course: item,
+                              currentUserRating: courseList[item.id],
                             ),
                           ),
                         );

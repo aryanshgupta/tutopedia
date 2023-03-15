@@ -121,6 +121,7 @@ class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
                             MaterialPageRoute(
                               builder: (context) => CourseScreen(
                                 course: widget.course,
+                                currentUserRating: courseList[widget.course.id],
                               ),
                             ),
                           );

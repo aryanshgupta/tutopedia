@@ -217,6 +217,7 @@ class SearchCourseScreen extends SearchDelegate {
                           MaterialPageRoute(
                             builder: (context) => CourseScreen(
                               course: snapshot.data![index],
+                              currentUserRating: courseList[snapshot.data![index].id],
                             ),
                           ),
                         );

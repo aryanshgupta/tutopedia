@@ -42,6 +42,7 @@ class _PopularCoursesState extends State<PopularCourses> {
                           MaterialPageRoute(
                             builder: (context) => CourseScreen(
                               course: item,
+                              currentUserRating: courseList[item.id],
                             ),
                           ),
                         );

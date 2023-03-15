@@ -49,6 +49,7 @@ class _CourseViewState extends State<CourseView> {
                 MaterialPageRoute(
                   builder: (context) => CourseScreen(
                     course: widget.courseList[index],
+                    currentUserRating: courseList[widget.courseList[index].id],
                   ),
                 ),
               );

@@ -42,6 +42,7 @@ class _NewCoursesState extends State<NewCourses> {
                           MaterialPageRoute(
                             builder: (context) => CourseScreen(
                               course: item,
+                              currentUserRating: courseList[item.id],
                             ),
                           ),
                         );
