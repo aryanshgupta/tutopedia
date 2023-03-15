@@ -277,7 +277,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                                   isLoading = false;
                                                 });
                                                 Navigator.pop(context);
-                                                if (value["success"] == "rating updated successfully ") {
+                                                if (value["success"] == "rated successfully" || value["success"] == "rating updated successfully ") {
                                                   Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
 
                                                   courseList[widget.course.id] = rating;
