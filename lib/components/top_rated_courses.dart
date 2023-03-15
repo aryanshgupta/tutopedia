@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tutopedia/components/course_slide_view.dart';
-import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class TopRatedCourses extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/course_list_screen.dart';
