@@ -171,14 +171,16 @@ class _CourseScreenState extends State<CourseScreen> {
                                   onPressed: () async {
                                     if (widget.course.lectureList.length > 1) {
                                       if (currentLectureIndex > 0) {
-                                        setState(() {
-                                          currentLectureIndex = currentLectureIndex - 1;
-                                        });
-                                        await ytPlayerController.changeVideo(
-                                          playVideoFrom: PlayVideoFrom.youtube(
-                                            'https://youtu.be/${widget.course.lectureList[currentLectureIndex].link.substring(30, 41)}',
-                                          ),
-                                        );
+                                        currentLectureIndex = currentLectureIndex - 1;
+                                        await ytPlayerController
+                                            .changeVideo(
+                                              playVideoFrom: PlayVideoFrom.youtube(
+                                                'https://youtu.be/${widget.course.lectureList[currentLectureIndex].link.substring(30, 41)}',
+                                              ),
+                                            )
+                                            .then(
+                                              (value) => setState(() {}),
+                                            );
                                       }
                                     }
                                   },
@@ -200,14 +202,16 @@ class _CourseScreenState extends State<CourseScreen> {
                                   onPressed: () async {
                                     if (widget.course.lectureList.length > 1) {
                                       if (currentLectureIndex < widget.course.lectureList.length - 1) {
-                                        setState(() {
-                                          currentLectureIndex = currentLectureIndex + 1;
-                                        });
-                                        await ytPlayerController.changeVideo(
-                                          playVideoFrom: PlayVideoFrom.youtube(
-                                            'https://youtu.be/${widget.course.lectureList[currentLectureIndex].link.substring(30, 41)}',
-                                          ),
-                                        );
+                                        currentLectureIndex = currentLectureIndex + 1;
+                                        await ytPlayerController
+                                            .changeVideo(
+                                              playVideoFrom: PlayVideoFrom.youtube(
+                                                'https://youtu.be/${widget.course.lectureList[currentLectureIndex].link.substring(30, 41)}',
+                                              ),
+                                            )
+                                            .then(
+                                              (value) => setState(() {}),
+                                            );
                                       }
                                     }
                                   },
@@ -428,14 +432,16 @@ class _CourseScreenState extends State<CourseScreen> {
                             ),
                             child: InkWell(
                               onTap: () async {
-                                setState(() {
-                                  currentLectureIndex = widget.course.lectureList.indexOf(item);
-                                });
-                                await ytPlayerController.changeVideo(
-                                  playVideoFrom: PlayVideoFrom.youtube(
-                                    'https://youtu.be/${widget.course.lectureList[currentLectureIndex].link.substring(30, 41)}',
-                                  ),
-                                );
+                                currentLectureIndex = widget.course.lectureList.indexOf(item);
+                                await ytPlayerController
+                                    .changeVideo(
+                                      playVideoFrom: PlayVideoFrom.youtube(
+                                        'https://youtu.be/${widget.course.lectureList[currentLectureIndex].link.substring(30, 41)}',
+                                      ),
+                                    )
+                                    .then(
+                                      (value) => setState(() {}),
+                                    );
                               },
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(15.0),
