@@ -1,38 +1,15 @@
 
 statefull to stateless
+
 rebuild of tabs on changes
+
 refresher to rebuild tabs
+
 comment code
-add gridview max item not fix
-mycouse max element 4
-text field focus color
-
-
-animation
-
-after updating profile photo it should return the url and then reflect changes on ui
-
-alertbox rounded like about alert
-
-otp ui
-
-about alert box
-
-dispose controllers
-
-loading height of main cate and main course
-
-image loading placeholder for profile photo
 
 app icon
 
-show total courses
-
-remove pop up after sign out
-
-
-
-
+put limit on new courses
 
 
 

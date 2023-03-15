@@ -164,10 +164,9 @@ class _CourseScreenState extends State<CourseScreen> {
                                             onPressed: () {
                                               if (snapshot.data!.length > 1) {
                                                 if (currentLectureIndex > 0) {
-                                                  currentLectureIndex = snapshot.data!.indexOf(snapshot.data![currentLectureIndex]) - 1;
-                                                }
-                                                if (currentLectureIndex != 0) {
                                                   setState(() {
+                                                    currentLectureIndex = currentLectureIndex - 1;
+
                                                     ytPlayerController.pause();
 
                                                     ytPlayerController.load(snapshot.data![currentLectureIndex].link.substring(30, 41));
@@ -193,10 +192,9 @@ class _CourseScreenState extends State<CourseScreen> {
                                             onPressed: () {
                                               if (snapshot.data!.length > 1) {
                                                 if (currentLectureIndex < snapshot.data!.length - 1) {
-                                                  currentLectureIndex = snapshot.data!.indexOf(snapshot.data![currentLectureIndex]) + 1;
-                                                }
-                                                if (currentLectureIndex != snapshot.data!.length - 1) {
                                                   setState(() {
+                                                    currentLectureIndex = currentLectureIndex + 1;
+
                                                     ytPlayerController.pause();
 
                                                     ytPlayerController.load(snapshot.data![currentLectureIndex].link.substring(30, 41));
