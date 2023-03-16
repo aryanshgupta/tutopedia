@@ -386,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 authInfoBox.put('profilePhoto', "");
                                 authInfoBox.put('authToken', "");
 
-                                myCoursesBox.delete("courseList");
+                                myCoursesBox.deleteAll(myCoursesBox.keys);
 
                                 Fluttertoast.showToast(
                                   msg: "Your are successfully sign out.",

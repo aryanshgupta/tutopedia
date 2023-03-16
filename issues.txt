@@ -1,10 +1,6 @@
 
 statefull to stateless
 
-rebuild of tabs on changes
-
-refresher to rebuild tabs
-
 comment code
 
 put limit on new courses
@@ -12,11 +8,6 @@ put limit on new courses
 shimmer on rest on screen
 
 app logo in recent
-
-
-
-
-
 
 
 
