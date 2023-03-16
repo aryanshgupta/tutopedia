@@ -141,6 +141,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    appLogBox.close();
+    authInfoBox.close();
+    myCoursesBox.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: authInfoBox.listenable(),
