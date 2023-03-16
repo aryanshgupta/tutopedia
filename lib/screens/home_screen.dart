@@ -542,6 +542,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
+                            Header(title: 'Most Popular Courses'),
+                            PopularCourses(),
                             Header(title: 'Categories'),
                             MainCategories(),
                             Header(title: 'Top Rated Courses'),
@@ -550,8 +552,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             TrendingTopics(),
                             Header(title: 'New Courses'),
                             NewCourses(),
-                            Header(title: 'Most Popular Courses'),
-                            PopularCourses(),
                           ],
                         )
                       : ValueListenableBuilder(
