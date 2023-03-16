@@ -202,8 +202,7 @@ class SearchCourseScreen extends SearchDelegate {
               ],
             ),
           );
-        }
-        if (snapshot.hasData) {
+        } else if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
             List<CourseModel> searchResult = snapshot.data!.where(
               (element) {
@@ -228,14 +227,14 @@ class SearchCourseScreen extends SearchDelegate {
                     onTap: () {
                       bool isEnrolled = false;
                       if (myCoursesBox.isNotEmpty) {
-                        isEnrolled = myCoursesBox.containsKey(snapshot.data![index].id);
+                        isEnrolled = myCoursesBox.containsKey(searchResult[index].id);
                       }
                       if (isEnrolled) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => CourseScreen(
-                              course: snapshot.data![index],
-                              currentUserRating: myCoursesBox.get(snapshot.data![index].id),
+                              course: searchResult[index],
+                              currentUserRating: myCoursesBox.get(searchResult[index].id),
                             ),
                           ),
                         );
@@ -243,7 +242,7 @@ class SearchCourseScreen extends SearchDelegate {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => CoursePreviewScreen(
-                              course: snapshot.data![index],
+                              course: searchResult[index],
                             ),
                           ),
                         );
