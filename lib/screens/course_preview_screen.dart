@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutopedia/components/loading_dialog.dart';
+import 'package:tutopedia/components/shimmer_box.dart';
 import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/course_model.dart';
@@ -46,8 +48,30 @@ class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
       body: SafeArea(
         child: ListView(
           children: [
-            Image.network(
-              "https://i.ytimg.com/vi/${widget.course.link.substring(30, 41)}/maxresdefault.jpg",
+            CachedNetworkImage(
+              imageUrl: "https://i.ytimg.com/vi/${widget.course.link.substring(30, 41)}/maxresdefault.jpg",
+              placeholder: (context, url) {
+                return ShimmerBox(
+                  height: MediaQuery.of(context).size.width / (16 / 9),
+                  width: MediaQuery.of(context).size.width,
+                  borderRadius: 0.0,
+                  margin: 0.0,
+                );
+              },
+              errorWidget: (context, url, error) {
+                return Container(
+                  height: MediaQuery.of(context).size.width / (16 / 9),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                  ),
+                  child: Icon(
+                    Icons.broken_image_rounded,
+                    color: Colors.grey.shade600,
+                    size: 35.0,
+                  ),
+                );
+              },
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 10.0),

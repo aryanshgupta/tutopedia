@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:tutopedia/components/shimmer_box.dart';
 import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/models/course_model.dart';
 import 'package:tutopedia/screens/course_preview_screen.dart';
@@ -69,9 +71,35 @@ class _CourseViewState extends State<CourseView> {
                   padding: const EdgeInsets.fromLTRB(8.0, 8.0, 4.0, 8.0),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                    child: Image.network(
-                      "https://i.ytimg.com/vi/${widget.courseList[index].link.substring(30, 41)}/maxresdefault.jpg",
+                    child: CachedNetworkImage(
+                      imageUrl: "https://i.ytimg.com/vi/${widget.courseList[index].link.substring(30, 41)}/maxresdefault.jpg",
+                      placeholder: (context, url) {
+                        return ShimmerBox(
+                          height: double.maxFinite,
+                          width: MediaQuery.of(context).size.width * 0.40,
+                          borderRadius: 10.0,
+                          margin: 0.0,
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return Container(
+                          height: double.maxFinite,
+                          width: MediaQuery.of(context).size.width * 0.40,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                            color: Colors.grey.shade100,
+                          ),
+                          child: Icon(
+                            Icons.broken_image_rounded,
+                            color: Colors.grey.shade600,
+                            size: 35.0,
+                          ),
+                        );
+                      },
                       fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width * 0.40,
                     ),
                   ),
                 ),
