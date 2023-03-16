@@ -18,6 +18,9 @@ import 'package:tutopedia/components/trending_topics.dart';
 import 'package:tutopedia/constants/app_info.dart';
 import 'package:tutopedia/constants/hive_boxes.dart';
 import 'package:tutopedia/constants/styling.dart';
+import 'package:tutopedia/models/course_model.dart';
+import 'package:tutopedia/models/main_category_model.dart';
+import 'package:tutopedia/models/topic_model.dart';
 import 'package:tutopedia/screens/change_password_screen.dart';
 import 'package:tutopedia/screens/search_course_screen.dart';
 import 'package:tutopedia/screens/signin_screen.dart';
@@ -31,6 +34,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<CourseModel> popularCourses = [];
+  List<MainCategoryModel> mainCategories = [];
+  List<CourseModel> topRatedCourses = [];
+  List<TopicModel> trendingTopics = [];
+  List<CourseModel> newCourses = [];
+
   int currentIndex = 0;
 
   bool isLoading = false;
@@ -46,7 +55,63 @@ class _HomeScreenState extends State<HomeScreen> {
         appVersion = info.version;
       });
     });
+
+    getAllData();
+
     super.initState();
+  }
+
+  Future<void> getAllData() async {
+    getAllPopularCourses();
+    getAllMainCategories();
+    getAllTopRatedCourses();
+    getAllTrendingTopics();
+    await getAllNewCourses();
+  }
+
+  Future<void> getAllPopularCourses() async {
+    try {
+      popularCourses = await ApiService().popularCourseList();
+    } catch (e) {
+      popularCourses = [];
+    }
+    setState(() {});
+  }
+
+  Future<void> getAllMainCategories() async {
+    try {
+      mainCategories = await ApiService().mainCategories();
+    } catch (e) {
+      mainCategories = [];
+    }
+    setState(() {});
+  }
+
+  Future<void> getAllTopRatedCourses() async {
+    try {
+      topRatedCourses = await ApiService().topRatedCourseList();
+    } catch (e) {
+      topRatedCourses = [];
+    }
+    setState(() {});
+  }
+
+  Future<void> getAllTrendingTopics() async {
+    try {
+      trendingTopics = await ApiService().trendingTopics();
+    } catch (e) {
+      trendingTopics = [];
+    }
+    setState(() {});
+  }
+
+  Future<void> getAllNewCourses() async {
+    try {
+      newCourses = await ApiService().newCourseList();
+    } catch (e) {
+      newCourses = [];
+    }
+    setState(() {});
   }
 
   @override
@@ -452,137 +517,148 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
                 return result;
               },
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: authInfoBox.get("name").isEmpty ? "Welcome" : "Hi, ${authInfoBox.get("name").split(" ")[0]}",
-                            style: TextStyle(
-                              fontFamily: secondaryFont,
-                              fontSize: 30.0,
-                              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "\nWhat do you wanna learn today?",
-                                style: TextStyle(
-                                  fontFamily: primaryFont,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                          maxLines: 2,
-                        ),
-                        Builder(builder: (context) {
-                          return GestureDetector(
-                            onTap: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            child: authInfoBox.get("profilePhoto").isEmpty
-                                ? const CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: AssetImage(
-                                      "assets/images/avatar.png",
-                                    ),
-                                  )
-                                : CircleAvatar(
-                                    radius: 25.0,
-                                    backgroundImage: NetworkImage(
-                                      "https://sagecrm.thesagenext.com/tutoapi/${authInfoBox.get("profilePhoto")}",
-                                    ),
-                                  ),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showSearch(context: context, delegate: SearchCourseScreen());
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(15.0),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0,
-                        vertical: 10.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: primaryColor.shade50,
-                        borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                      ),
+              child: RefreshIndicator(
+                onRefresh: () {
+                  popularCourses = [];
+                  mainCategories = [];
+                  topRatedCourses = [];
+                  trendingTopics = [];
+                  newCourses = [];
+                  setState(() {});
+                  return getAllData();
+                },
+                child: ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            "Search",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black45,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: authInfoBox.get("name").isEmpty ? "Welcome" : "Hi, ${authInfoBox.get("name").split(" ")[0]}",
+                              style: TextStyle(
+                                fontFamily: secondaryFont,
+                                fontSize: 30.0,
+                                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "\nWhat do you wanna learn today?",
+                                  style: TextStyle(
+                                    fontFamily: primaryFont,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : Colors.black54,
+                                  ),
+                                ),
+                              ],
                             ),
+                            maxLines: 2,
                           ),
-                          Icon(
-                            Icons.search_rounded,
-                            color: Colors.black45,
-                            size: 30.0,
-                          ),
+                          Builder(builder: (context) {
+                            return GestureDetector(
+                              onTap: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              child: authInfoBox.get("profilePhoto").isEmpty
+                                  ? const CircleAvatar(
+                                      radius: 25,
+                                      backgroundImage: AssetImage(
+                                        "assets/images/avatar.png",
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 25.0,
+                                      backgroundImage: NetworkImage(
+                                        "https://sagecrm.thesagenext.com/tutoapi/${authInfoBox.get("profilePhoto")}",
+                                      ),
+                                    ),
+                            );
+                          }),
                         ],
                       ),
                     ),
-                  ),
-                  currentIndex == 0
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    GestureDetector(
+                      onTap: () {
+                        showSearch(context: context, delegate: SearchCourseScreen());
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0,
+                          vertical: 10.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: primaryColor.shade50,
+                          borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
-                            Header(title: 'Most Popular Courses'),
-                            PopularCourses(),
-                            SizedBox(height: 15.0),
-                            Header(title: 'Categories'),
-                            MainCategories(),
-                            SizedBox(height: 15.0),
-                            Header(title: 'Top Rated Courses'),
-                            TopRatedCourses(),
-                            SizedBox(height: 15.0),
-                            Header(title: 'Trending topics'),
-                            TrendingTopics(),
-                            SizedBox(height: 15.0),
-                            Header(title: 'New Courses'),
-                            NewCourses(),
+                            Text(
+                              "Search",
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black45,
+                              ),
+                            ),
+                            Icon(
+                              Icons.search_rounded,
+                              color: Colors.black45,
+                              size: 30.0,
+                            ),
                           ],
-                        )
-                      : ValueListenableBuilder(
-                          valueListenable: myCoursesBox.listenable(),
-                          builder: (context, myCoursesBox, child) {
-                            Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-                                  child: SizedBox(
-                                    child: Text(
-                                      "Your enrolled courses ${courseList.isEmpty ? "" : "(${courseList.length})"}",
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ),
+                    currentIndex == 0
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Header(title: 'Most Popular Courses'),
+                              PopularCourses(popularCourses),
+                              const SizedBox(height: 15.0),
+                              const Header(title: 'Categories'),
+                              MainCategories(mainCategories),
+                              const SizedBox(height: 15.0),
+                              const Header(title: 'Top Rated Courses'),
+                              TopRatedCourses(topRatedCourses),
+                              const SizedBox(height: 15.0),
+                              const Header(title: 'Trending topics'),
+                              TrendingTopics(trendingTopics),
+                              const SizedBox(height: 15.0),
+                              const Header(title: 'New Courses'),
+                              NewCourses(newCourses),
+                            ],
+                          )
+                        : ValueListenableBuilder(
+                            valueListenable: myCoursesBox.listenable(),
+                            builder: (context, myCoursesBox, child) {
+                              Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
+                                    child: SizedBox(
+                                      child: Text(
+                                        "Your enrolled courses ${courseList.isEmpty ? "" : "(${courseList.length})"}",
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const MyCourseList(),
-                              ],
-                            );
-                          }),
-                ],
+                                  const MyCourseList(),
+                                ],
+                              );
+                            }),
+                  ],
+                ),
               ),
             ),
           ),
