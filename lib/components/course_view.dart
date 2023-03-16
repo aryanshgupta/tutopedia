@@ -7,7 +7,7 @@ import 'package:tutopedia/models/course_model.dart';
 import 'package:tutopedia/screens/course_preview_screen.dart';
 import 'package:tutopedia/screens/course_screen.dart';
 
-class CourseView extends StatefulWidget {
+class CourseView extends StatelessWidget {
   final List<CourseModel> courseList;
   final bool shrinkWrap;
 
@@ -18,18 +18,11 @@ class CourseView extends StatefulWidget {
   });
 
   @override
-  State<CourseView> createState() => _CourseViewState();
-}
-
-class _CourseViewState extends State<CourseView> {
-  bool isLoading = false;
-
-  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      shrinkWrap: widget.shrinkWrap,
-      physics: widget.shrinkWrap ? const ScrollPhysics() : null,
-      itemCount: widget.courseList.length,
+      shrinkWrap: shrinkWrap,
+      physics: shrinkWrap ? const ScrollPhysics() : null,
+      itemCount: courseList.length,
       padding: const EdgeInsets.symmetric(
         horizontal: 15.0,
         vertical: 5.0,
@@ -42,14 +35,14 @@ class _CourseViewState extends State<CourseView> {
           onTap: () {
             bool isEnrolled = false;
             if (myCoursesBox.isNotEmpty) {
-              isEnrolled = myCoursesBox.containsKey(widget.courseList[index].id);
+              isEnrolled = myCoursesBox.containsKey(courseList[index].id);
             }
             if (isEnrolled) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => CourseScreen(
-                    course: widget.courseList[index],
-                    currentUserRating: myCoursesBox.get(widget.courseList[index].id),
+                    course: courseList[index],
+                    currentUserRating: myCoursesBox.get(courseList[index].id),
                   ),
                 ),
               );
@@ -57,7 +50,7 @@ class _CourseViewState extends State<CourseView> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => CoursePreviewScreen(
-                    course: widget.courseList[index],
+                    course: courseList[index],
                   ),
                 ),
               );
@@ -72,7 +65,7 @@ class _CourseViewState extends State<CourseView> {
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                     child: CachedNetworkImage(
-                      imageUrl: "https://i.ytimg.com/vi/${widget.courseList[index].link.substring(30, 41)}/maxresdefault.jpg",
+                      imageUrl: "https://i.ytimg.com/vi/${courseList[index].link.substring(30, 41)}/maxresdefault.jpg",
                       placeholder: (context, url) {
                         return ShimmerBox(
                           height: double.maxFinite,
@@ -110,7 +103,7 @@ class _CourseViewState extends State<CourseView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.courseList[index].title,
+                          courseList[index].title,
                           style: const TextStyle(
                             fontSize: 15.0,
                           ),
@@ -118,7 +111,7 @@ class _CourseViewState extends State<CourseView> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          widget.courseList[index].channelName,
+                          courseList[index].channelName,
                           style: TextStyle(
                             fontSize: 10.0,
                             color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
@@ -127,7 +120,7 @@ class _CourseViewState extends State<CourseView> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         RatingBarIndicator(
-                          rating: double.parse(widget.courseList[index].rating),
+                          rating: double.parse(courseList[index].rating),
                           itemBuilder: (context, index) => const Icon(
                             Icons.star_rate_rounded,
                             color: Colors.amber,
@@ -145,7 +138,7 @@ class _CourseViewState extends State<CourseView> {
                             ),
                             const SizedBox(width: 5.0),
                             Text(
-                              int.parse(widget.courseList[index].studentEnrolled) >= 2 ? "${widget.courseList[index].studentEnrolled} students" : "${widget.courseList[index].studentEnrolled} student",
+                              int.parse(courseList[index].studentEnrolled) >= 2 ? "${courseList[index].studentEnrolled} students" : "${courseList[index].studentEnrolled} student",
                               style: TextStyle(
                                 fontSize: 10.0,
                                 color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black45,
