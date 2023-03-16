@@ -161,13 +161,9 @@ class _SigninScreenState extends State<SigninScreen> {
                               });
                               Navigator.pop(context);
 
-                              Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
-
                               for (var item in myCourseList) {
-                                courseList[item.id] = 0.0;
+                                myCoursesBox.put(item.id, 0.0);
                               }
-
-                              myCoursesBox.put("courseList", courseList);
 
                               authInfoBox.put('name', value["data"]["name"] ?? "");
                               authInfoBox.put('email', value["data"]["email"] ?? "");

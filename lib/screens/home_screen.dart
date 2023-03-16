@@ -52,8 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
-    totalMyCourses = courseList.length;
+    totalMyCourses = myCoursesBox.length;
 
     PackageInfo.fromPlatform().then((info) {
       setState(() {
@@ -666,11 +665,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         : ValueListenableBuilder(
                             valueListenable: myCoursesBox.listenable(),
-                            builder: (context, myCoursesBox, child) {
-                              Map<dynamic, dynamic> newCourseList = myCoursesBox.get('courseList') ?? {};
-                              if (newCourseList.length != totalMyCourses) {
+                            builder: (context, updatedMyCoursesBox, child) {
+                              if (updatedMyCoursesBox.length != totalMyCourses) {
                                 getAllMyCourses();
-                                totalMyCourses = newCourseList.length;
+                                totalMyCourses = updatedMyCoursesBox.length;
                               }
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -679,7 +677,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
                                     child: SizedBox(
                                       child: Text(
-                                        "Your enrolled courses ${newCourseList.isEmpty ? "" : "(${newCourseList.length})"}",
+                                        "Your enrolled courses ${updatedMyCoursesBox.isEmpty ? "" : "(${updatedMyCoursesBox.length})"}",
                                         style: TextStyle(
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold,

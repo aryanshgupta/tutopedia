@@ -38,17 +38,16 @@ class _CourseViewState extends State<CourseView> {
             Radius.circular(10.0),
           ),
           onTap: () {
-            Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
             bool isEnrolled = false;
-            if (courseList.isNotEmpty) {
-              isEnrolled = courseList.containsKey(widget.courseList[index].id);
+            if (myCoursesBox.isNotEmpty) {
+              isEnrolled = myCoursesBox.containsKey(widget.courseList[index].id);
             }
             if (isEnrolled) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => CourseScreen(
                     course: widget.courseList[index],
-                    currentUserRating: courseList[widget.courseList[index].id],
+                    currentUserRating: myCoursesBox.get(widget.courseList[index].id),
                   ),
                 ),
               );

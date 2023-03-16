@@ -22,17 +22,16 @@ class CourseSlideView extends StatelessWidget {
               Radius.circular(10.0),
             ),
             onTap: () {
-              Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
               bool isEnrolled = false;
-              if (courseList.isNotEmpty) {
-                isEnrolled = courseList.containsKey(item.id);
+              if (myCoursesBox.isNotEmpty) {
+                isEnrolled = myCoursesBox.containsKey(item.id);
               }
               if (isEnrolled) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => CourseScreen(
                       course: item,
-                      currentUserRating: courseList[item.id],
+                      currentUserRating: myCoursesBox.get(item.id),
                     ),
                   ),
                 );

@@ -206,17 +206,16 @@ class SearchCourseScreen extends SearchDelegate {
                   return ListTile(
                     title: Text(searchResult[index].title),
                     onTap: () {
-                      Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
                       bool isEnrolled = false;
-                      if (courseList.isNotEmpty) {
-                        isEnrolled = courseList.containsKey(snapshot.data![index].id);
+                      if (myCoursesBox.isNotEmpty) {
+                        isEnrolled = myCoursesBox.containsKey(snapshot.data![index].id);
                       }
                       if (isEnrolled) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => CourseScreen(
                               course: snapshot.data![index],
-                              currentUserRating: courseList[snapshot.data![index].id],
+                              currentUserRating: myCoursesBox.get(snapshot.data![index].id),
                             ),
                           ),
                         );

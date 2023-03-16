@@ -29,17 +29,16 @@ class PopularCourses extends StatelessWidget {
               Radius.circular(10.0),
             ),
             onTap: () {
-              Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
               bool isEnrolled = false;
-              if (courseList.isNotEmpty) {
-                isEnrolled = courseList.containsKey(courseList[itemIndex].id);
+              if (myCoursesBox.isNotEmpty) {
+                isEnrolled = myCoursesBox.containsKey(courseList[itemIndex].id);
               }
               if (isEnrolled) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => CourseScreen(
                       course: courseList[itemIndex],
-                      currentUserRating: courseList[courseList[itemIndex].id],
+                      currentUserRating: myCoursesBox.get(courseList[itemIndex].id),
                     ),
                   ),
                 );

@@ -80,8 +80,6 @@ class _CourseScreenState extends State<CourseScreen> {
                 });
                 LoadingDialog(context);
 
-                Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
-
                 ApiService()
                     .deleteCourse(
                   id: widget.course.id,
@@ -94,8 +92,7 @@ class _CourseScreenState extends State<CourseScreen> {
                   Navigator.pop(context);
 
                   if (value["success"] == "MyCourse Removed Successfully" || value["message"] == "Call to a member function delete() on null") {
-                    courseList.remove(widget.course.id);
-                    myCoursesBox.put("courseList", courseList);
+                    myCoursesBox.delete(widget.course.id);
 
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
@@ -287,11 +284,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                       });
                                       Navigator.pop(context);
                                       if (value["success"] == "rated successfully" || value["success"] == "rating updated successfully ") {
-                                        Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
-
-                                        courseList[widget.course.id] = rating;
-
-                                        myCoursesBox.put("courseList", courseList);
+                                        myCoursesBox.put(widget.course.id, rating);
 
                                         Fluttertoast.showToast(
                                           msg: "Successfully rated the course.",

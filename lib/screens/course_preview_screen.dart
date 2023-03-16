@@ -96,8 +96,6 @@ class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
                   });
                   LoadingDialog(context);
 
-                  Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
-
                   ApiService()
                       .addCourse(
                     id: widget.course.id,
@@ -109,15 +107,13 @@ class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
                     });
                     Navigator.pop(context);
                     if (value["success"] == "Course Add Successfully To My Course" || value["error"] == "Already Add To My Course") {
-                      courseList[widget.course.id] = 0.0;
-
-                      myCoursesBox.put("courseList", courseList);
+                      myCoursesBox.put(widget.course.id, 0.0);
 
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => CourseScreen(
                             course: widget.course,
-                            currentUserRating: courseList[widget.course.id],
+                            currentUserRating: myCoursesBox.get(widget.course.id),
                           ),
                         ),
                       );
