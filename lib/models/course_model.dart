@@ -10,6 +10,9 @@ class CourseModel {
   final String rating;
   final String studentEnrolled;
   final List<LectureModel> lectureList;
+  final String mainCategory;
+  final String subCategory;
+  final String topic;
 
   CourseModel({
     required this.id,
@@ -21,6 +24,9 @@ class CourseModel {
     required this.rating,
     required this.studentEnrolled,
     required this.lectureList,
+    required this.mainCategory,
+    required this.subCategory,
+    required this.topic,
   });
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +48,9 @@ class CourseModel {
       rating: json['rating'].toString(),
       studentEnrolled: json['student_enrolled'].toString(),
       lectureList: lectures,
+      mainCategory: json['main_category'] ?? "",
+      subCategory: json['sub_category'] ?? "",
+      topic: json['topic'] ?? "",
     );
   }
 }

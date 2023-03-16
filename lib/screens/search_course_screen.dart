@@ -76,11 +76,21 @@ class SearchCourseScreen extends SearchDelegate {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
-              List<CourseModel> searchResult = snapshot.data!
-                  .where(
-                    (element) => element.title.toLowerCase().contains(query.trim().toLowerCase()),
-                  )
-                  .toList();
+              List<CourseModel> searchResult = snapshot.data!.where(
+                (element) {
+                  if (element.title.toLowerCase().contains(query.trim().toLowerCase())) {
+                    return true;
+                  } else if (element.mainCategory.toLowerCase().contains(query.trim().toLowerCase())) {
+                    return true;
+                  } else if (element.subCategory.toLowerCase().contains(query.trim().toLowerCase())) {
+                    return true;
+                  } else if (element.topic.toLowerCase().contains(query.trim().toLowerCase())) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                },
+              ).toList();
               if (searchResult.isNotEmpty) {
                 return CourseView(
                   courseList: searchResult,
@@ -195,11 +205,21 @@ class SearchCourseScreen extends SearchDelegate {
         }
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
-            List<CourseModel> searchResult = snapshot.data!
-                .where(
-                  (element) => element.title.toLowerCase().contains(query.trim().toLowerCase()),
-                )
-                .toList();
+            List<CourseModel> searchResult = snapshot.data!.where(
+              (element) {
+                if (element.title.toLowerCase().contains(query.trim().toLowerCase())) {
+                  return true;
+                } else if (element.mainCategory.toLowerCase().contains(query.trim().toLowerCase())) {
+                  return true;
+                } else if (element.subCategory.toLowerCase().contains(query.trim().toLowerCase())) {
+                  return true;
+                } else if (element.topic.toLowerCase().contains(query.trim().toLowerCase())) {
+                  return true;
+                } else {
+                  return false;
+                }
+              },
+            ).toList();
             if (searchResult.isNotEmpty) {
               return ListView.separated(
                 itemBuilder: (context, index) {
