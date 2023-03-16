@@ -7,17 +7,11 @@ refresher to rebuild tabs
 
 comment code
 
-app icon
-
 put limit on new courses
 
-shimmer
+shimmer on rest on screen
 
-
-
-
-
-
+app logo in recent
 
 
 
