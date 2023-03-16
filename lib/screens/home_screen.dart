@@ -39,6 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   List<CourseModel> topRatedCourses = [];
   List<TopicModel> trendingTopics = [];
   List<CourseModel> newCourses = [];
+  List<CourseModel> myCourses = [];
+
+  int totalMyCourses = 0;
 
   int currentIndex = 0;
 
@@ -49,6 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+    totalMyCourses = courseList.length;
+
     PackageInfo.fromPlatform().then((info) {
       setState(() {
         appName = info.appName;
@@ -57,6 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     getAllData();
+
+    getAllMyCourses();
 
     super.initState();
   }
@@ -112,6 +120,25 @@ class _HomeScreenState extends State<HomeScreen> {
       newCourses = [];
     }
     setState(() {});
+  }
+
+  Future<void> getAllMyCourses() async {
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        setState(() {
+          isLoading = true;
+        });
+      },
+    );
+    try {
+      myCourses = await ApiService().myCourses(authInfoBox.get("authToken"));
+    } catch (e) {
+      myCourses = [];
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -519,13 +546,17 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: RefreshIndicator(
                 onRefresh: () {
-                  popularCourses = [];
-                  mainCategories = [];
-                  topRatedCourses = [];
-                  trendingTopics = [];
-                  newCourses = [];
-                  setState(() {});
-                  return getAllData();
+                  if (currentIndex == 0) {
+                    popularCourses = [];
+                    mainCategories = [];
+                    topRatedCourses = [];
+                    trendingTopics = [];
+                    newCourses = [];
+                    setState(() {});
+                    return getAllData();
+                  } else {
+                    return getAllMyCourses();
+                  }
                 },
                 child: ListView(
                   children: [
@@ -636,7 +667,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         : ValueListenableBuilder(
                             valueListenable: myCoursesBox.listenable(),
                             builder: (context, myCoursesBox, child) {
-                              Map<dynamic, dynamic> courseList = myCoursesBox.get('courseList') ?? {};
+                              Map<dynamic, dynamic> newCourseList = myCoursesBox.get('courseList') ?? {};
+                              if (newCourseList.length != totalMyCourses) {
+                                getAllMyCourses();
+                                totalMyCourses = newCourseList.length;
+                              }
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -644,7 +679,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
                                     child: SizedBox(
                                       child: Text(
-                                        "Your enrolled courses ${courseList.isEmpty ? "" : "(${courseList.length})"}",
+                                        "Your enrolled courses ${newCourseList.isEmpty ? "" : "(${newCourseList.length})"}",
                                         style: TextStyle(
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold,
@@ -653,10 +688,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   ),
-                                  const MyCourseList(),
+                                  MyCourseList(
+                                    courseList: myCourses,
+                                    isLoading: isLoading,
+                                  ),
                                 ],
                               );
-                            }),
+                            },
+                          ),
                   ],
                 ),
               ),
