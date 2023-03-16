@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:tutopedia/components/shimmer_box.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/course_list_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -23,27 +23,32 @@ class _TrendingTopicsState extends State<TrendingTopics> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: snapshot.data!.map((item) {
-                return Padding(
-                  padding: const EdgeInsets.all(3.25),
-                  child: ActionChip(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CourseListScreen(
-                            topic: item,
-                          ),
+                return InkWell(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(50.0),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CourseListScreen(
+                          topic: item,
                         ),
-                      );
-                    },
-                    backgroundColor: primaryColor.shade50,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      side: BorderSide(
-                        width: 0.0,
-                        color: primaryColor.shade200,
                       ),
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(3.25),
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    alignment: Alignment.center,
+                    constraints: const BoxConstraints(minWidth: 150.0),
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(50.0),
+                      ),
+                      color: primaryColor.shade50,
                     ),
-                    label: Text(
+                    child: Text(
                       item.title,
                       style: const TextStyle(
                         color: Colors.black54,
@@ -55,31 +60,18 @@ class _TrendingTopicsState extends State<TrendingTopics> {
             ),
           );
         } else {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.filled(5, 0).map((item) {
-                  return Padding(
-                    padding: const EdgeInsets.all(3.25),
-                    child: Chip(
-                      backgroundColor: primaryColor.shade50,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      label: const Text(
-                        "loading........",
-                        style: TextStyle(
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.filled(5, 0).map((item) {
+                return const ShimmerBox(
+                  height: 40.0,
+                  width: 150.0,
+                  borderRadius: 50.0,
+                  margin: 3.25,
+                );
+              }).toList(),
             ),
           );
         }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:tutopedia/components/course_slide_view.dart';
+import 'package:tutopedia/components/shimmer_box.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class TopRatedCourses extends StatefulWidget {
@@ -19,32 +19,18 @@ class _TopRatedCoursesState extends State<TopRatedCourses> {
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           return CourseSlideView(snapshot.data!);
         } else {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.filled(5, 0).map((item) {
-                  return Container(
-                    margin: const EdgeInsets.all(7.5),
-                    width: 200.0,
-                    height: 112.5,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10.0),
-                      ),
-                      color: Colors.grey.shade100,
-                    ),
-                    child: Icon(
-                      Icons.image_rounded,
-                      color: Colors.grey.shade800,
-                      size: 35.0,
-                    ),
-                  );
-                }).toList(),
-              ),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.filled(5, 0).map((item) {
+                return const ShimmerBox(
+                  height: 112.5,
+                  width: 200.0,
+                  borderRadius: 10.0,
+                  margin: 7.5,
+                );
+              }).toList(),
             ),
           );
         }

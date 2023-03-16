@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:tutopedia/components/shimmer_box.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/screens/sub_categories_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
@@ -89,32 +89,18 @@ class MainCategories extends StatelessWidget {
             ),
           );
         } else {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.filled(5, 0).map((item) {
-                  return Container(
-                    margin: const EdgeInsets.all(7.5),
-                    width: 200.0,
-                    height: 115.0,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(15.0),
-                      ),
-                      color: Colors.grey.shade100,
-                    ),
-                    child: Icon(
-                      Icons.image_rounded,
-                      color: Colors.grey.shade800,
-                      size: 35.0,
-                    ),
-                  );
-                }).toList(),
-              ),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.filled(5, 0).map((item) {
+                return const ShimmerBox(
+                  height: 115.0,
+                  width: 200.0,
+                  borderRadius: 15.0,
+                  margin: 7.5,
+                );
+              }).toList(),
             ),
           );
         }
