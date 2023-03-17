@@ -41,6 +41,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             size: 22.0,
           ),
           splashRadius: 25.0,
+          tooltip: "Back",
         ),
         title: Text(
           "Forgot Password",

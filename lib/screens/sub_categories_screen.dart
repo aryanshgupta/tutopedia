@@ -25,6 +25,7 @@ class SubCategoryScreen extends StatelessWidget {
             size: 22.0,
           ),
           splashRadius: 25.0,
+          tooltip: "Back",
         ),
         title: Text(
           mainCategory.title,
@@ -48,6 +49,7 @@ class SubCategoryScreen extends StatelessWidget {
               size: 25.0,
             ),
             splashRadius: 25.0,
+            tooltip: "Search",
           ),
         ],
       ),

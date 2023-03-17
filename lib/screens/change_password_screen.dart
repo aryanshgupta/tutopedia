@@ -43,6 +43,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             size: 22.0,
           ),
           splashRadius: 25.0,
+          tooltip: "Back",
         ),
         title: Text(
           "Create New Password",
@@ -93,6 +94,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     },
                     icon: hidePassword ? const Icon(Icons.visibility_rounded) : const Icon(Icons.visibility_off_rounded),
                     splashRadius: 20.0,
+                    tooltip: hidePassword ? "View" : "Hide",
                   ),
                   labelText: "Password",
                   border: const OutlineInputBorder(
@@ -124,6 +126,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     },
                     icon: hideConfirmPassword ? const Icon(Icons.visibility_rounded) : const Icon(Icons.visibility_off_rounded),
                     splashRadius: 20.0,
+                    tooltip: hideConfirmPassword ? "View" : "Hide",
                   ),
                   labelText: "Confirm Password",
                   border: const OutlineInputBorder(

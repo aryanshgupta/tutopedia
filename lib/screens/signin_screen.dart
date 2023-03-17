@@ -102,6 +102,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     },
                     icon: hidePassword ? const Icon(Icons.visibility_rounded) : const Icon(Icons.visibility_off_rounded),
                     splashRadius: 20.0,
+                    tooltip: hidePassword ? "View" : "Hide",
                   ),
                   labelText: "Password",
                   border: const OutlineInputBorder(

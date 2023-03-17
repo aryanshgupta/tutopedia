@@ -40,6 +40,7 @@ class _EmailVerifyScreenState extends State<EmailVerifyScreen> {
             size: 22.0,
           ),
           splashRadius: 25.0,
+          tooltip: "Back",
         ),
         title: Text(
           "Verify your email",

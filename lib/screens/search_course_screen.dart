@@ -30,6 +30,7 @@ class SearchCourseScreen extends SearchDelegate {
         icon: const Icon(
           Icons.clear_rounded,
         ),
+        tooltip: "Clear",
       ),
     ];
   }
@@ -43,6 +44,7 @@ class SearchCourseScreen extends SearchDelegate {
       icon: const Icon(
         Icons.arrow_back_rounded,
       ),
+      tooltip: "Back",
     );
   }
 

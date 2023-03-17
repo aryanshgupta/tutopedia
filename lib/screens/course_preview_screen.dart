@@ -56,6 +56,7 @@ class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
                 size: 22.0,
               ),
               splashRadius: 25.0,
+              tooltip: "Back",
             ),
             title: Text(
               "Details",
@@ -79,6 +80,7 @@ class _CoursePreviewScreenState extends State<CoursePreviewScreen> {
                   size: 25.0,
                 ),
                 splashRadius: 25.0,
+                tooltip: "Search",
               ),
             ],
           ),

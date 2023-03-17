@@ -63,6 +63,7 @@ class _CourseScreenState extends State<CourseScreen> {
             size: 22.0,
           ),
           splashRadius: 25.0,
+          tooltip: "Back",
         ),
         title: Text(
           "Details",
@@ -114,7 +115,10 @@ class _CourseScreenState extends State<CourseScreen> {
             icon: Icon(
               Icons.bookmark_added,
               color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+              size: 25.0,
             ),
+            splashRadius: 25.0,
+            tooltip: "Disenroll",
           ),
         ],
       ),

@@ -250,6 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade300 : Colors.white,
                                   ),
                                 ),
+                                tooltip: "Choose Image",
                               ),
                             ),
                     ],
