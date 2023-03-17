@@ -38,6 +38,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+            size: 22.0,
           ),
           splashRadius: 25.0,
         ),

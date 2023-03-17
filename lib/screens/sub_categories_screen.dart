@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/main_category_model.dart';
+import 'package:tutopedia/screens/search_course_screen.dart';
 import 'package:tutopedia/screens/topic_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
@@ -21,6 +22,7 @@ class SubCategoryScreen extends StatelessWidget {
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+            size: 22.0,
           ),
           splashRadius: 25.0,
         ),
@@ -32,6 +34,22 @@ class SubCategoryScreen extends StatelessWidget {
         ),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SearchCourseScreen(),
+              );
+            },
+            icon: Icon(
+              Icons.search_rounded,
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+              size: 25.0,
+            ),
+            splashRadius: 25.0,
+          ),
+        ],
       ),
       body: SafeArea(
         child: FutureBuilder(

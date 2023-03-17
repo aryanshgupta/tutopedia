@@ -22,6 +22,7 @@ class CourseListScreen extends StatelessWidget {
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+            size: 22.0,
           ),
           splashRadius: 25.0,
         ),
@@ -41,9 +42,10 @@ class CourseListScreen extends StatelessWidget {
                 delegate: SearchCourseScreen(),
               );
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.search_rounded,
-              color: Colors.black,
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+              size: 25.0,
             ),
             splashRadius: 25.0,
           ),

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tutopedia/constants/styling.dart';
 import 'package:tutopedia/models/sub_category_model.dart';
 import 'package:tutopedia/screens/course_list_screen.dart';
+import 'package:tutopedia/screens/search_course_screen.dart';
 import 'package:tutopedia/services/api_service.dart';
 
 class TopicScreen extends StatelessWidget {
@@ -21,6 +22,7 @@ class TopicScreen extends StatelessWidget {
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+            size: 22.0,
           ),
           splashRadius: 25.0,
         ),
@@ -32,6 +34,22 @@ class TopicScreen extends StatelessWidget {
         ),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SearchCourseScreen(),
+              );
+            },
+            icon: Icon(
+              Icons.search_rounded,
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+              size: 25.0,
+            ),
+            splashRadius: 25.0,
+          ),
+        ],
       ),
       body: SafeArea(
         child: FutureBuilder(

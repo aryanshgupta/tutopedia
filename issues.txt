@@ -1,6 +1,3 @@
-
-statefull to stateless
-
 comment code
 
 put limit on new courses
